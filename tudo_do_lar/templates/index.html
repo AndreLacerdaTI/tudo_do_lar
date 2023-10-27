@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <form class="menu-botoes" method="post" action="{{ url_for('atualizar_clientes') }}">
+        <h1 class="">Atualizar</h1>
+        <button class="menu-botoes-direita">Teste
+        </button>
+        <h1 class="espaco-botao">&nbsp</h1>
+    </form>
+    {% if clientes %}
+        {% for cliente in clientes %}
+            <h1>{{cliente[0]}}</h1>
+            <h1>{{cliente[1]}}</h1>
+        {% endfor %}
+    {% endif %}
+</body>
+</html>
