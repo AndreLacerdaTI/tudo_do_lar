@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+
+{% block title %}
+    <title>Manutenções</title>
+{% endblock %}
+
+{% block menu %}
+    <div class="menu" >
+        <img class="menu-logo" src="/static/images/Logo-color.png" alt="Logo">
+        <form class="form-menu" method="post" action="{{ url_for('menu') }}">
+            <button class="menu-botoes" name="endereco" value="index">Pagina principal</button>
+            <button class="menu-botoes-ativo" name="endereco" value="manutencao">Manutenção</button>
+            <button class="menu-botoes" name="endereco" value="relatorio">Relatorios</button>
+        </form>
+    </div>
+{% endblock %}
+{% block container %}
+<div class="sub-menu" >
+    <form method="post" action="{{ url_for('manutencao') }}">
+        <button class="sub-menu-botoes" name="cliente_id">Novo serviço</button>
+    </form>
+    <form method="post" action="{{ url_for('manutencao') }}">
+        <button class="sub-menu-botoes" name="cliente_id">Atualizar</button>
+    </form>
+</div>
+{% if clientes and itens %}
+    <div class="titulo-opcoes-botoes">
+        <h1>Nome</h1>
+        <h1>Telefone</h1>
+        <h1>Pronto</h1>
+        <h1>Valor</h1>
+    </div>
+    {% for cliente in clientes %}
+        {% for item in itens %}
+            <form method="post" action="{{ url_for('itens') }}">
+                <button class="opcoes-botoes" name="cliente_id" value="{{cliente.id}}">
+                    <h2>{{cliente.nome}}</h2>
+                    <h2>{{cliente.telefone}}</h2>
+                    {% if item.cliente_id == cliente.id %}
+                        {% if item.finalizado == 0 %}
+                            <h2>Não</h2>
+                        {% elif item.finalizado == 1 %}
+                            <h2>Sim</h2>
+                        {% endif %}
+                        {% for servico in servicos %}
+                            {% if servico.item_id == item.id %}
+                                <h2>R$ {{servico.valor}}</h2>
+                            {% else %}
+                                <h2>-</h2>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                </button>
+            </form>
+        {% endfor %}
+    {% endfor %}
+{% endif %}
+<!--
+{% if itens %}
+    {% for item in itens %}
+        <form method="post" action="{{ url_for('servicos') }}">
+            <button class="opcoes-botoes" name="item_id" value="{{item[0]}}">
+                <h2>{{item[1]}}</h2>
+                <h3>{{item[2]}}</h3>
+                <h4>{{item[3]}}</h4>
+            </button>
+        </form>
+    {% endfor %}
+{% endif %}
+{% if servicos %}
+    {% for servico in servicos %}
+        <h2>{{servico[0]}}</h2>
+        <h2>{{servico[1]}}</h2>
+        <h3>{{servico[2]}}</h3>
+    {% endfor %}
+{% endif %}
+{% if dados %}
+    <table class="tabela">
+        <tr>
+            <th class="titulo-tabela">ID</th>
+            <th class="titulo-tabela">Tipo</th>
+            <th class="titulo-tabela">Marca</th>
+            <th class="titulo-tabela">Defeito relatado</th>
+            <th class="titulo-tabela">Data de chegada</th>
+            <th class="titulo-tabela">Data de entrega</th>
+            <th class="titulo-tabela">Finalidado</th>
+        </tr>
+        {% for dado in dados %}
+            {% for cliente in clientes %}
+                {% if cliente[0]==dado[7] %}
+                    <tr><td>{{cliente[1]}}</td></tr>
+                {% endif %}
+            {% endfor %}
+        <tr>
+            <tr>
+                <td>{{dado[0]}}</td>
+                <td>{{dado[1]}}</td>
+                <td>{{dado[2]}}</td>
+                <td>{{dado[3]}}</td>
+                <td>{{dado[4]}}</td>
+                <td>{{dado[5]}}</td>
+                <td>{{dado[6]}}</td>
+            </tr>
+        </tr>
+        {% endfor %}
+    </table>
+{% endif %}
+-->
+{% endblock %}

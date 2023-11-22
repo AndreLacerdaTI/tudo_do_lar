@@ -1,23 +1,35 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
-</head>
-<body>
-    <form class="menu-botoes" method="post" action="{{ url_for('atualizar_clientes') }}">
-        <h1 class="">Atualizar</h1>
-        <button class="menu-botoes-direita">Teste
-        </button>
-        <h1 class="espaco-botao">&nbsp</h1>
-    </form>
-    {% if clientes %}
-        {% for cliente in clientes %}
-            <h1>{{cliente[0]}}</h1>
-            <h1>{{cliente[1]}}</h1>
-        {% endfor %}
-    {% endif %}
-</body>
-</html>
+
+{% extends "base.html" %}
+
+{% block title %}
+    <title>Pagina inicial</title>
+{% endblock %}
+
+{% block menu %}
+    <div class="menu" >
+        <img class="menu-logo" src="/static/images/Logo-color.png" alt="Logo">
+        <form class="form-menu" method="post" action="{{ url_for('menu') }}">
+            <button class="menu-botoes-ativo" name="endereco" value="index">Pagina principal</button>
+            <button class="menu-botoes" name="endereco" value="manutencao">Manutenção</button>
+            <button class="menu-botoes" name="endereco" value="relatorio">Relatorios</button>
+        </form>
+        <form class="form-menu" method="post" action="{{ url_for('alternar_tema') }}">
+            <button class="menu-botoes" name="endereco" value="index">Alterar tema</button>
+            <!-- Rounded switch -->
+            <label class="switch">
+                {% if tema=='branco' %}
+                <input type="checkbox" name="botao_checkbox" value="branco" checked>
+                <span class="slider round"></span>
+                {% elif tema=='laranja' %}
+                    <input type="checkbox" name="botao_checkbox" value="laranja">
+                    <span class="slider round"></span>
+                {% endif %}
+            </label>
+        </form>
+    </div>
+{% endblock %}
+{% block container %}
+    <h3>Endereço:</h3>
+    <h4>R. Avelino Faleiro, 57 - Carmópolis de Minas</h4>
+    <a href="https://maps.app.goo.gl/qy28mUUnGSEDosrj9">Ver localização no mapa</a>
+{% endblock %}

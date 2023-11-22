@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% block title %}{% endblock %}
+    {% if tema=='branco' %}
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style_branco.css') }}">
+    {% elif tema=='laranja' %}
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style_laranja.css') }}">
+    {% endif %}
+    <link rel="icon" href="/static/images/Logo-color.ico">
+</head>
+<body>
+    {% block menu %}{% endblock %}
+    {% block container %}{% endblock %}
+</body>
+</html>

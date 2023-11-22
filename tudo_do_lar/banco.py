@@ -17,8 +17,28 @@ def select(nome_tabela,comando):
     return dados
     
 def insert(nome_tabela, colunas, valores):
+    # Inserindo no banco com os parametros enviados do app e front-end
     comando_insert = f"INSERT INTO {nome_tabela} ({', '.join(colunas)}) VALUES ({', '.join(['?']*len(colunas))})"
     conexao = sqlite3.connect('database.db')
     cursor = conexao.cursor()
     cursor.execute(comando_insert,valores)
     conexao.commit()
+
+def tabela_dicionario(nome_tabela):
+    # Conectar ao banco de dados
+    conn = sqlite3.connect('database.db')
+    cursor = conn.cursor()
+
+    # Executar a consulta para obter dados dos usuários
+    comando = 'SELECT * FROM '+nome_tabela
+    cursor.execute(comando)
+    
+    # Obter os resultados como uma lista de dicionários
+    colunas = [col[0] for col in cursor.description]
+    dicionario = [dict(zip(colunas, linha)) for linha in cursor.fetchall()]
+
+    # Fechar a conexão com o banco de dados
+    conn.close()
+
+    # Renderizar o template com os dados
+    return dicionario

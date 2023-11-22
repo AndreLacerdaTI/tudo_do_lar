@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block title %}
+    <title>Relatórios</title>
+{% endblock %}
+
+{% block menu %}
+    <div class="menu" >
+        <img class="menu-logo" src="/static/images/Logo-color.png" alt="Logo">
+        <form class="form-menu" method="post" action="{{ url_for('menu') }}">
+            <button class="menu-botoes" name="endereco" value="index">Pagina principal</button>
+            <button class="menu-botoes" name="endereco" value="manutencao">Manutenção</button>
+            <button class="menu-botoes-ativo" name="endereco" value="relatorio">Relatorios</button>
+        </form>
+    </div>
+{% endblock %}
