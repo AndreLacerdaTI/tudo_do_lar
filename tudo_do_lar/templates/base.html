@@ -9,7 +9,12 @@
     {% elif tema=='laranja' %}
         <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style_laranja.css') }}">
     {% endif %}
-    <link rel="icon" href="/static/images/Logo-color.ico">
+    <link rel="icon" href="/static/images/Logo.ico">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Roboto+Slab:wght@500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Roboto+Slab:wght@500;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/autonumeric@4.10.0/dist/autoNumeric.min.js"></script>
 </head>
 <body>
     {% block menu %}{% endblock %}

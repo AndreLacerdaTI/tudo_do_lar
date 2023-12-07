@@ -2,6 +2,7 @@
 
 {% block title %}
     <title>Manutenções</title>
+    <script src="https://cdn.jsdelivr.net/npm/autonumeric@4.10.0/dist/autoNumeric.min.js"></script>
 {% endblock %}
 
 {% block menu %}
@@ -16,94 +17,150 @@
 {% endblock %}
 {% block container %}
 <div class="sub-menu" >
-    <form method="post" action="{{ url_for('manutencao') }}">
-        <button class="sub-menu-botoes" name="cliente_id">Novo serviço</button>
+    <form method="post" action="{{ url_for('nova_os') }}">
+        <button class="sub-menu-botoes" name="cliente_id" value="teste">Novo serviço</button>
     </form>
     <form method="post" action="{{ url_for('manutencao') }}">
         <button class="sub-menu-botoes" name="cliente_id">Atualizar</button>
     </form>
 </div>
-{% if clientes and itens %}
-    <div class="titulo-opcoes-botoes">
-        <h1>Nome</h1>
-        <h1>Telefone</h1>
-        <h1>Pronto</h1>
-        <h1>Valor</h1>
-    </div>
-    {% for cliente in clientes %}
-        {% for item in itens %}
-            <form method="post" action="{{ url_for('itens') }}">
-                <button class="opcoes-botoes" name="cliente_id" value="{{cliente.id}}">
-                    <h2>{{cliente.nome}}</h2>
-                    <h2>{{cliente.telefone}}</h2>
-                    {% if item.cliente_id == cliente.id %}
-                        {% if item.finalizado == 0 %}
-                            <h2>Não</h2>
-                        {% elif item.finalizado == 1 %}
-                            <h2>Sim</h2>
-                        {% endif %}
-                        {% for servico in servicos %}
-                            {% if servico.item_id == item.id %}
-                                <h2>R$ {{servico.valor}}</h2>
-                            {% else %}
-                                <h2>-</h2>
-                            {% endif %}
-                        {% endfor %}
-                    {% endif %}
-                </button>
-            </form>
-        {% endfor %}
-    {% endfor %}
-{% endif %}
 <!--
-{% if itens %}
-    {% for item in itens %}
-        <form method="post" action="{{ url_for('servicos') }}">
-            <button class="opcoes-botoes" name="item_id" value="{{item[0]}}">
-                <h2>{{item[1]}}</h2>
-                <h3>{{item[2]}}</h3>
-                <h4>{{item[3]}}</h4>
-            </button>
-        </form>
-    {% endfor %}
-{% endif %}
-{% if servicos %}
-    {% for servico in servicos %}
-        <h2>{{servico[0]}}</h2>
-        <h2>{{servico[1]}}</h2>
-        <h3>{{servico[2]}}</h3>
-    {% endfor %}
-{% endif %}
-{% if dados %}
+<div class="pesquisa">
+    <h2>Buscar OS</h2>
+    <form method="post" action="{{ url_for('buscar_cadastro') }}">
+        <input type="text" name="buscar_nome" placeholder="Nome">
+        <button class="botao-colorido">Buscar cliente</button>
+    </form>
+    {% if resultado_pesquisa %}
+        {% for cliente in resultado_pesquisa %}
+            <form method="post" action="{{ url_for('buscar_cadastro') }}">
+                <button class="opcoes-botoes" name="cliente_id" value="{{cliente}}"><h1>{{cliente[1]}}{{cliente[2]}}</h1></button>
+            </form>    
+        {% endfor %}    
+    {% endif %}
+</div>
+-->
+<div class="container">
+    {% if nova_os %}
+        <div class="container-cadastro">
+            <div class="cadastro">
+                <h2>Nova OS</h2>
+                <form method="post" action="{{ url_for('registrar_os') }}">
+                    <label for="nome">Nome</label>
+                    <input type="text" name="nome" placeholder="Nome completo" required><br>
+                    <label for="telefone">Telefone</label><br>
+                    <input type="text" id="telefone" name="telefone" placeholder="Telefone" required><br>
+                    <label for="endereco">Endereço</label><br>
+                    <input type="text" id="endereco" name="endereco" placeholder="Endereço completo"><br>
+                    <label for="data_chegada">Data de chegada</label><br>
+                    <input type="date" id="data_chegada" name="data_chegada">
+                    <label for="data_entrega">Data de entrega</label><br>
+                    <input type="date" id="data_entrega" name="data_entrega">
+                    <label for="finalizado">Finalizado</label><br>
+                    <select type="text" id="finalizado" name="finalizado" placeholder="Finalizado">
+                        <option value="Sim">Sim</option>
+                        <option value="Não">Não</option>
+                    </select>
+                    <button class="botao-colorido">OK</button>
+                </form>
+            </div>
+        </div>
+    {% endif %}
+
+    {% if editar_os %}
+        <div class="container-cadastro">
+            <div class="cadastro">
+                <h2>Editar OS</h2>
+                <form method="post" action="{{ url_for('salvar_alterações_os') }}">
+                    <label for="nome">Nome</label><br>
+                    <input type="text" id="nome"         name="nome"          value="{{ info_os[1]}}"  placeholder="Nome completo" required>
+                    <label for="nome">Telefone</label><br>
+                    <input type="text" id="telefone"     name="telefone"      value="{{ info_os[2] }}" placeholder="Telefone" required>
+                    <label for="nome">Endereço</label><br>
+                    <input type="text" id="endereco"     name="endereco"      value="{{ info_os[3] }}" placeholder="Endereço completo">
+                    <label for="nome">Data de chegada</label><br>
+                    <input type="date" id="data_chegada" name="data_chegada"  value="{{ info_os[4] }}"><br>
+                    <label for="nome">Data de entrega</label>
+                    <input type="date" id="data_entrega" name="data_entrega"  value="{{ info_os[5] }}"><br>
+                    <label for="finalizado">Pronto</label>
+                    <input type="text" id="finalizado" name="finalizado"  value="{{ info_os[6] }}">
+                    <button class="botao-colorido" name="id" value="{{ info_os[0] }}">OK</button>
+                </form>
+            </div>
+        </div>
+        <div class="container-direita">
+            <div class="edicao">
+                <h2>Serviços</h2>
+                {% if info_servicos %}
+                        <form class="form-servico" method="post" action="{{ url_for('salvar_alterações_servico') }}">
+                            <table class="tabela-servico">
+                                <thead>
+                                    <tr class="linha-servico">
+                                        <th>ID</th>
+                                        <th>Descrição</th>
+                                        <th>Valor</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                <tr class="linha-servico">
+                                    <td class="item-servico"><input class="input-servico" type="text" id="id" name="id" value="{{ info_servicos[0]}}"  placeholder="ID" readonly></td>
+                                    <td class="item-servico"><input class="input-servico" type="text" id="descricao" name="descricao" value="{{ info_servicos[1]}}"  placeholder="Valor"></td>
+                                    <td class="item-servico"><input class="input-servico" type="text" id="valor" name="valor" value="{{ info_servicos[2]}}"  placeholder="Valor"></td>
+                                    <td class="item-servico"><button class="botao-confirmar" name="id" value="{{ info_servicos[0] }}">
+                                        <img class="imagem-botao" src="/static/images/icone-salvar.png" alt="Logo">
+                                    </button></td>
+                                </tr>
+                                <tr>
+                                    <button class="botao-colorido" name="id" value="{{ info_servicos[0] }}">Adicionar</button>
+                                </tr>
+                            </tbody>
+                            </table>
+                        </form>
+                {% endif %}
+            </div>
+        </div>
+
+    {% endif %}
+</div>
+{% if os %}
     <table class="tabela">
         <tr>
-            <th class="titulo-tabela">ID</th>
-            <th class="titulo-tabela">Tipo</th>
-            <th class="titulo-tabela">Marca</th>
-            <th class="titulo-tabela">Defeito relatado</th>
-            <th class="titulo-tabela">Data de chegada</th>
-            <th class="titulo-tabela">Data de entrega</th>
-            <th class="titulo-tabela">Finalidado</th>
+            <form method="post" action="{{ url_for('filtrar_tabela') }}">
+                <th class="titulo-tabela"><button class="botao-filtro" name="filtro_tabela" value="nome">Nome</button></th>
+                <th class="titulo-tabela"><button class="botao-filtro" name="filtro_tabela" value="telefone">Telefone</button></th>
+                <th class="titulo-tabela"><button class="botao-filtro" name="filtro_tabela" value="endereco">Endereço</button></th>
+                <th class="titulo-tabela"><button class="botao-filtro" name="filtro_tabela" value="data_chegada">Data de chegada</button></th>
+                <th class="titulo-tabela"><button class="botao-filtro" name="filtro_tabela" value="data_entrega">Data de entrega</button></th>
+                <th class="titulo-tabela"><button class="botao-filtro" name="filtro_tabela" value="finalizado">Finalizado</button></th>
+                <th class="titulo-tabela">Atualizar</th>
+            </form>
         </tr>
-        {% for dado in dados %}
-            {% for cliente in clientes %}
-                {% if cliente[0]==dado[7] %}
-                    <tr><td>{{cliente[1]}}</td></tr>
-                {% endif %}
-            {% endfor %}
-        <tr>
+        {% for dado in os %}
             <tr>
-                <td>{{dado[0]}}</td>
-                <td>{{dado[1]}}</td>
-                <td>{{dado[2]}}</td>
-                <td>{{dado[3]}}</td>
-                <td>{{dado[4]}}</td>
-                <td>{{dado[5]}}</td>
-                <td>{{dado[6]}}</td>
+                <td>{{dado.nome}}</td>
+                <td>{{dado.telefone}}</td>
+                <td>{{dado.endereco}}</td>
+                <td><input class="input-tabela" type="date" value="{{dado.data_chegada}}" readonly></td>
+                <td><input class="input-tabela" type="date" value="{{dado.data_entrega}}" readonly></td>
+                <td>{{dado.finalizado}}</td>    
+                <td>
+                    <form method="post" action="{{ url_for('editar_os') }}">
+                        <button name="os_id" value="{{dado.id}}">Editar</button>
+                    </form>
+                </td>  
             </tr>
-        </tr>
         {% endfor %}
     </table>
 {% endif %}
--->
+<script>
+    // Inicialize o campo de entrada usando autoNumeric
+    var inputElement = document.getElementById('valor');
+    var formatter = new AutoNumeric(inputElement, {
+        currencySymbol: 'R$ ',
+        decimalCharacter: ',',
+        digitGroupSeparator: '.',
+        currencySymbolPlacement: 'p',
+        decimalPlaces: 2
+    });
+</script>
 {% endblock %}

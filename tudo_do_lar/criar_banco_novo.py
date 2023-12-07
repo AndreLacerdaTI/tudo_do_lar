@@ -1,5 +1,7 @@
 import sqlite3
 
+# Modelo com cliente, servico e itens
+'''
 CriarTabelaClientes = """ CREATE TABLE IF NOT EXISTS Clientes (
                         id integer PRIMARY KEY AUTOINCREMENT,
                         nome text NOT NULL,
@@ -32,4 +34,30 @@ conexao = sqlite3.connect('database.db')
 cursor = conexao.cursor()
 cursor.execute(CriarTabelaClientes)
 cursor.execute(CriarTabelaServico)
-cursor.execute(CriarTabelaItem)
+cursor.execute(CriarTabelaItem)                        
+                        
+
+'''
+CriarTabelaOS = """ CREATE TABLE IF NOT EXISTS OS (
+                        id integer PRIMARY KEY AUTOINCREMENT,
+                        nome text NOT NULL,
+                        telefone text,
+                        endereco text,
+                        data_chegada DATE,
+                        data_entrega DATE,
+                        finalizado INTEGER
+                        ); """
+
+
+CriarTabelaServico = """ CREATE TABLE IF NOT EXISTS Servicos (
+                        id integer PRIMARY KEY AUTOINCREMENT,
+                        descricao text,
+                        valor REAL,
+                        os_id INTEGER,
+                        FOREIGN KEY (os_id) REFERENCES OS(id)
+                        ); """
+
+conexao = sqlite3.connect('database.db')
+cursor = conexao.cursor()
+cursor.execute(CriarTabelaOS)
+cursor.execute(CriarTabelaServico)

@@ -1,7 +1,7 @@
 body{
     background-color: #ffffff;
     font-size: 22px;
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'Roboto Slab', serif;
     margin: 0;
     /*text-transform: uppercase;*/
 }
@@ -11,6 +11,8 @@ body{
     width: 100%;
     height: 80px;
     display: flex;
+
+    box-shadow: 0 0 1em gray;
 }
 
 .menu-logo{
@@ -26,8 +28,8 @@ body{
     text-align: center;
     padding: 25px;
 
-    font-family: 'Montserrat', sans-serif;
-    font-size: 20px;
+    font-family: 'Roboto Slab', serif;
+    font-size: 15px;
     font-style: normal;
     font-weight: 700;
     line-height: normal;
@@ -39,15 +41,18 @@ body{
     background-color: #ffffff4D;
     color: #ffffff;
     border: 0;
+    border-radius: 25px;
     height: 80px;
     text-align: center;
     padding: 25px;
 
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'Roboto Slab', serif;
     font-size: 20px;
     font-style: normal;
     font-weight: 700;
     line-height: normal;
+
+    box-shadow: 0 0 10px gray;
 }
 
 .menu-botoes:hover{
@@ -75,6 +80,7 @@ body{
 }
 
 .sub-menu{
+    margin-top: 20px;
     background-color: #ffffff;
     width: 100%;
     height: 50px;
@@ -83,14 +89,15 @@ body{
 }
 
 .sub-menu-botoes{
-    background-color: #00000000;
-    color: #000000;
+    background-color: #E88120;
+    color: #ffffff;
     border: 0;
+    border-radius: 20px;
     text-align: center;
     height: 50px;
-    padding: 0px 50px;
-
-    font-family: 'Montserrat', sans-serif;
+    padding: 10px 50px;
+    margin: 0px 10px;
+    font-family: 'Roboto Slab', serif;
     font-size: 20px;
     font-style: normal;
     font-weight: 700;
@@ -133,17 +140,204 @@ h2,h1 {
     width: 25%;
 }
 
+/* Cadastro */
+
+.container{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    text-align: center;
+}
+
+.container-cadastro{
+    width: 38%;
+    display: flex;
+    flex-direction: row;
+    text-align: center;
+}
+.container-direita{
+    width: 58%;
+}
+
+.edicao{
+    display: flex;
+    flex-direction:column;
+    width: 100%;
+    margin: 2%;
+    height: auto;
+    background-color: #ffffff;
+    border-radius: 20px;
+    align-items: center;
+    text-align: center;
+    box-shadow: 0 0 10px #484848;
+}
+
+.tabela-servico, .form-servico{
+    width: 95%;
+}
+
+.input-servico{
+    color: #000000;
+    outline: none;
+    border: 2px solid #484848;
+    border-radius: 0;
+    background-color: #ffffff00;
+    text-align: center;
+    height: 30px;
+    width: 98%;
+    margin: 0;
+}
+
+.item-servico {
+    margin: 0;
+    border: 0;
+}
+
+.linha-servico:hover, .item-servico:hover{
+    background-color: #FFFFFF;
+}
+
+.imagem-botao{
+    width: 20px;
+    height: auto;
+}
+
+.botao-confirmar{
+    border: 2px solid #484848;
+    border-radius: 50px;
+    padding: 10px;
+    background-color: #FFFFFF;
+    transition: 0.2s;
+}
+
+.botao-confirmar:hover{
+    border: 2px solid #00ff00;
+    background-color: #00ff2f3b;
+}
+
+.cadastro, .pesquisa{
+    display: flex;
+    flex-direction:column;
+    width: 100%;
+    margin: 2%;
+    height: auto;
+    background-color: #ffffff;
+    border-radius: 20px;
+    align-items: center;
+    text-align: center;
+    box-shadow: 0 0 10px #484848;
+}
+.pesquisa{
+    display: flex;
+    flex-direction:column;
+    width: 40%;
+    margin: 2%;
+    height: auto;
+    background-color: #ffffff;
+    border-radius: 20px;
+    padding: 10px;
+    align-items: center;
+    text-align: center;
+    box-shadow: 0 0 10px #484848;
+}
+label{
+    font-size: 15px;
+    font-weight: bold;
+}
+input, select{
+    color: #000000;
+    outline: none;
+    border: 2px solid #484848;
+    border-radius: 20px;
+    background-color: #ffffff00;
+    text-align: center;
+    width: 80%;
+    height: 30px;
+    margin: 10px;
+}
+
+input:focus{
+    border: 2px solid #E88120;
+}
+
+.botao-colorido{
+    height: 40px;
+    width: 40%;
+    margin: 10px;
+    border: 0;
+    border-radius: 20px;
+    color: #FFFFFF;
+    background-color: #ababab;
+    font-weight: bold;
+    text-align: center;
+    box-shadow: 0 0 10px #484848;
+    transition: 0.2s;
+}
+
+.botao-colorido:hover, .botao-colorido:focus{
+    color: #FFFFFF;
+    background-color: #E88120;
+    box-shadow: 0 0 10px #E88120; 
+    outline: none;
+}
+
+/* Tabela */
+
 .tabela{
     width: 100%;
+    margin:0 auto;
+    border-spacing: 1; 
+    border-collapse: collapse; 
+    border-radius: 20px;
+    box-shadow: 0 0 10px #484848;
 }
-.titulo-tabela{
+.titulo-tabela, .botao-filtro{
     width: 12.5%;
+    height: 50px;
+    font-size: 18px;
+    color: #FFFFFF;
     text-align: center;
     background-color: #E88120;
+    margin: 0;
 }
+
+.botao-filtro{
+    width: 100%;
+    height: 100%;
+    border: 0;
+    font-family: 'Roboto Slab', serif;
+    font-weight: bold;
+}
+
+.botao-filtro:hover{
+    background-color: #ffffff2b;
+}
+
+.input-tabela{
+    border: 0;
+    font-family: 'Roboto Slab', serif;
+}
+.input-tabela:focus{
+    border: 0;
+}
+
 td{
     text-align: center;
-    border: 1px solid #818181;
+    font-size: 15px;
+    border-bottom: 1px solid #00000045;
+}
+
+td:hover{
+    background-color: #ccc;
+}
+
+tr{
+    height: 40px;
+    transition: 0.2s;
+}
+
+tr:hover{
+    background-color: #e6e6e6;
 }
 
 /* The switch - the box around the slider */
