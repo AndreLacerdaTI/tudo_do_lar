@@ -4,11 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     {% block title %}{% endblock %}
+    <!--
     {% if tema=='branco' %}
         <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style_branco.css') }}">
     {% elif tema=='laranja' %}
         <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style_laranja.css') }}">
     {% endif %}
+    -->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style_branco.css') }}">
     <link rel="icon" href="/static/images/Logo.ico">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

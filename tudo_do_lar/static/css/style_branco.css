@@ -6,6 +6,8 @@ body{
     /*text-transform: uppercase;*/
 }
 
+/* MENU */
+
 .menu{
     background-color: #E88120;
     width: 100%;
@@ -47,12 +49,12 @@ body{
     padding: 25px;
 
     font-family: 'Roboto Slab', serif;
-    font-size: 20px;
+    font-size: 15px;
     font-style: normal;
     font-weight: 700;
     line-height: normal;
 
-    box-shadow: 0 0 10px gray;
+    /*box-shadow: 0 0 10px gray;*/
 }
 
 .menu-botoes:hover{
@@ -79,8 +81,10 @@ body{
     color: #484848;
 }
 
+/* SUBMENU */
+
 .sub-menu{
-    margin-top: 20px;
+    margin: 20px 0;
     background-color: #ffffff;
     width: 100%;
     height: 50px;
@@ -90,20 +94,110 @@ body{
 
 .sub-menu-botoes{
     background-color: #E88120;
+    box-shadow: 0 0 10px #E88120;
     color: #ffffff;
     border: 0;
     border-radius: 20px;
     text-align: center;
-    height: 50px;
+    height: 40px;
     padding: 10px 50px;
     margin: 0px 10px;
     font-family: 'Roboto Slab', serif;
-    font-size: 20px;
+    font-size: 15px;
     font-style: normal;
     font-weight: 700;
     line-height: normal;
 
     transition: 0.2s;
+}
+
+.form-sub-menu{
+    display: flex;
+}
+
+.input-sub-menu{
+    margin: 0;
+    width: 300px;
+    height: 35px;
+}
+
+.botao-buscar{
+    background-color: #E88120;
+    box-shadow: 0 0 10px #E88120;
+    color: #ffffff;
+    border: 0;
+    border-radius: 20px;
+    text-align: center;
+    width: 80px;
+    height: 40px;
+    margin: 0px 10px;
+    font-family: 'Roboto Slab', serif;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+
+    transition: 0.2s;
+}
+
+.filtros {
+    width: 100%;
+    background-color: #ffffff;
+    align-items: center;
+    text-align: center;
+}
+
+.form-filtros{
+    height: 100px;
+    align-items: center;
+    text-align: center;
+    margin: 0;
+}
+
+.botao-filtro-ativo{
+    width: 150px;
+    height: 40px;
+    background-color: #E88120;
+    color: #FFFFFF;
+    font-family: 'Roboto Slab', serif;
+    font-size: 15px;
+    border-radius: 20px;
+    border: 0;
+    position: relative;
+    transition: 0.2s;
+}
+
+.botao-filtro-ativo:hover{
+    background-color: #ff0000;
+}
+
+
+.botao-filtro-ativo:hover img {
+    display: block; /* Mostra a imagem quando o mouse está sobre o botão */
+}
+
+.texto-filtro{
+    position: relative;
+    margin: 0;
+    text-align: center;
+    align-items: center;
+}
+
+.imagem-botao-filtro{
+    display: none;
+    position: absolute; /* Define a posição absoluta para a imagem */
+    top: 12px;
+    right: 65px;
+    width: 20px;
+    transition: 0.2s;
+}
+
+.botao-filtro-ativo:hover h4 {
+    color: transparent;
+}
+
+.botao-filtro-ativo span {
+    z-index: 1; /* Coloca o texto acima da imagem */
 }
 
 .titulo-opcoes-botoes{
@@ -176,7 +270,7 @@ h2,h1 {
     width: 95%;
 }
 
-.input-servico{
+.input-servico, .input-valor{
     color: #000000;
     outline: none;
     border: 2px solid #484848;
@@ -184,8 +278,18 @@ h2,h1 {
     background-color: #ffffff00;
     text-align: center;
     height: 30px;
-    width: 98%;
+    width: 97%;
     margin: 0;
+}
+
+.item-servico:first-child{
+    width: 8%;
+    padding-right: 7px;
+}
+.item-servico:last-child{
+    width: 80px;
+    align-items: center;
+    text-align: center;
 }
 
 .item-servico {
@@ -197,22 +301,46 @@ h2,h1 {
     background-color: #FFFFFF;
 }
 
-.imagem-botao{
-    width: 20px;
-    height: auto;
-}
-
-.botao-confirmar{
-    border: 2px solid #484848;
-    border-radius: 50px;
-    padding: 10px;
-    background-color: #FFFFFF;
+.botao-tabela{
+    border: 0;
+    background-color: #00000000;
+    height: 50px;
+    width: auto;
     transition: 0.2s;
 }
 
-.botao-confirmar:hover{
-    border: 2px solid #00ff00;
-    background-color: #00ff2f3b;
+.botao-tabela:hover{
+    scale: 1.2;
+}
+
+.imagem-botao-tabela{
+    width: 30px;
+    height: auto;
+}
+
+.imagem-botao{
+    width: 35px;
+    height: 35px;
+}
+
+.botao-alterar-servico{
+    width: 35px;
+    height: 35px;
+    padding: 0;
+    border: 0;
+    border-radius: 100px;
+    background-color: #FFFFFF;
+    align-items: center;
+    text-align: center;
+    transition: 0.2s;
+}
+
+.botao-alterar-servico:first-child:hover,.botao-alterar-servico:first-child:focus{
+    background-color: #00ff2f77;
+}
+
+.botao-alterar-servico:last-child:hover, .botao-alterar-servico:last-child:focus{
+    background-color: #ff000077;
 }
 
 .cadastro, .pesquisa{

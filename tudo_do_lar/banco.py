@@ -19,9 +19,10 @@ def select_param(nome_tabela, coluna, valor):
 def select_like(nome_tabela, valor):
     conexao = sqlite3.connect('database.db')
     cursor = conexao.cursor()
-    cursor.execute("SELECT * FROM "+nome_tabela+" WHERE nome LIKE '%' || ? || '%'", (valor,))
-    dados = cursor.fetchall()
-    return dados
+    cursor.execute("SELECT * FROM "+nome_tabela+" WHERE nome LIKE '%' || ? || '%' OR telefone LIKE '%' || ? || '%' OR data_chegada LIKE '%' || ? || '%' OR data_entrega LIKE '%' || ? || '%'", (valor,valor,valor,valor))
+    colunas = [col[0] for col in cursor.description]
+    dicionario = [dict(zip(colunas, linha)) for linha in cursor.fetchall()]
+    return dicionario
 
 def select(nome_tabela,comando):
     # O parametro 'comando' receberá o restante do select, como por exemplo: ORDER BY nome
@@ -52,6 +53,13 @@ def update_servico(descricao, valor, id):
     conn = sqlite3.connect('database.db')
     cur = conn.cursor()
     cur.execute('UPDATE Servicos SET descricao = ?, valor = ? WHERE id = ?', (descricao, valor, id))
+    conn.commit()
+    conn.close()
+
+def delete(nome_tabela, id):
+    conn = sqlite3.connect('database.db')
+    cur = conn.cursor()
+    cur.execute("DELETE FROM "+nome_tabela+" WHERE id=?", (id,))
     conn.commit()
     conn.close()
 
@@ -91,3 +99,20 @@ def tabela_dicionario_order(nome_tabela,comando):
 
     # Renderizar o template com os dados
     return dicionario
+
+def valores_dicionario(os):
+    # Somando os valores dos serviços e exportando em um dicionario formatado em R$
+    valores = {}
+    for os_id in os:
+        id = os_id['id']
+        info_servicos = select_param('Servicos', 'os_id', id)
+        total = 0
+        for valor in info_servicos:
+            id = valor[3]
+            preco = valor[2]
+            total = total + preco
+            valor_real = "R$ {:,.2f}".format(total)
+            valor_formatado = valor_real.replace('.',',')
+        valores[id] = valor_formatado
+        valor_formatado = 'Sem serviço'
+    return valores

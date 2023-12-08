@@ -23,23 +23,38 @@
     <form method="post" action="{{ url_for('manutencao') }}">
         <button class="sub-menu-botoes" name="cliente_id">Atualizar</button>
     </form>
-</div>
-<!--
-<div class="pesquisa">
-    <h2>Buscar OS</h2>
-    <form method="post" action="{{ url_for('buscar_cadastro') }}">
-        <input type="text" name="buscar_nome" placeholder="Nome">
-        <button class="botao-colorido">Buscar cliente</button>
+    <form><h1>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h1></form>
+    <form></form>
+    <form class="form-sub-menu" method="post" action="{{ url_for('buscar_cadastro') }}">
+        {% if busca=='texto' %}
+            <input focus class="input-sub-menu" type="text" name="buscar" id="buscar" placeholder="Pesquisar: Nome / Telefone">
+        {% elif busca=='data' %}
+            <input class="input-sub-menu" type="date" name="buscar" id="buscar">
+        {% endif %}
+        <button class="sub-menu-botoes">Buscar</button>
     </form>
-    {% if resultado_pesquisa %}
-        {% for cliente in resultado_pesquisa %}
-            <form method="post" action="{{ url_for('buscar_cadastro') }}">
-                <button class="opcoes-botoes" name="cliente_id" value="{{cliente}}"><h1>{{cliente[1]}}{{cliente[2]}}</h1></button>
-            </form>    
-        {% endfor %}    
-    {% endif %}
+    <form class="form-sub-menu" method="post" action="{{ url_for('alternar_busca') }}">
+        <button class="botao-buscar">
+            {% if busca=='texto' %}
+                <img class="imagem-botao-tabela" src="/static/images/icone-pesquisa-avancada.png" alt="Logo">
+            {% elif busca=='data' %}
+                Aa..
+            {% endif %}
+        </button>
+    </form>
 </div>
--->
+{% if filtro %}
+    <div class="filtros">
+        <h4>Buscando por:</h4>
+        <form class="form-filtros" method="post" action="{{ url_for('manutencao') }}">
+            <button class="botao-filtro-ativo" value="{{filtro}}">
+                <h4 class="texto-filtro">{{filtro}}</h4>
+                <img class="imagem-botao-filtro" src="/static/images/icone-fechar.png" alt="Logo">
+            </button>
+        </form>
+        <br>
+    </div>
+{% endif %}
 <div class="container">
     {% if nova_os %}
         <div class="container-cadastro">
@@ -59,7 +74,7 @@
                     <label for="finalizado">Finalizado</label><br>
                     <select type="text" id="finalizado" name="finalizado" placeholder="Finalizado">
                         <option value="Sim">Sim</option>
-                        <option value="Não">Não</option>
+                        <option value="Não" selected>Não</option selected>
                     </select>
                     <button class="botao-colorido">OK</button>
                 </form>
@@ -83,43 +98,57 @@
                     <label for="nome">Data de entrega</label>
                     <input type="date" id="data_entrega" name="data_entrega"  value="{{ info_os[5] }}"><br>
                     <label for="finalizado">Pronto</label>
-                    <input type="text" id="finalizado" name="finalizado"  value="{{ info_os[6] }}">
-                    <button class="botao-colorido" name="id" value="{{ info_os[0] }}">OK</button>
+                    <select type="text" id="finalizado" name="finalizado" value="{{ info_os[6] }}">
+                        <option value="Sim">Sim</option>
+                        <option value="Não" selected>Não</option>
+                    </select>
+                    <button class="botao-colorido" name="comando" value="{{ info_os[0] }}-salvar">Salvar</button>
+                    <button class="botao-colorido" name="comando" value="{{ info_os[0] }}-excluir">Excluir</button>
                 </form>
             </div>
         </div>
         <div class="container-direita">
             <div class="edicao">
                 <h2>Serviços</h2>
-                {% if info_servicos %}
-                        <form class="form-servico" method="post" action="{{ url_for('salvar_alterações_servico') }}">
-                            <table class="tabela-servico">
-                                <thead>
-                                    <tr class="linha-servico">
-                                        <th>ID</th>
-                                        <th>Descrição</th>
-                                        <th>Valor</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
+                    {% if info_servicos %}
+                        <table class="tabela-servico">
+                            <thead>
                                 <tr class="linha-servico">
-                                    <td class="item-servico"><input class="input-servico" type="text" id="id" name="id" value="{{ info_servicos[0]}}"  placeholder="ID" readonly></td>
-                                    <td class="item-servico"><input class="input-servico" type="text" id="descricao" name="descricao" value="{{ info_servicos[1]}}"  placeholder="Valor"></td>
-                                    <td class="item-servico"><input class="input-servico" type="text" id="valor" name="valor" value="{{ info_servicos[2]}}"  placeholder="Valor"></td>
-                                    <td class="item-servico"><button class="botao-confirmar" name="id" value="{{ info_servicos[0] }}">
-                                        <img class="imagem-botao" src="/static/images/icone-salvar.png" alt="Logo">
-                                    </button></td>
+                                    <th>ID</th>
+                                    <th>Descrição</th>
+                                    <th>Valor</th>
                                 </tr>
-                                <tr>
-                                    <button class="botao-colorido" name="id" value="{{ info_servicos[0] }}">Adicionar</button>
-                                </tr>
+                            </thead>
+                            <tbody>
+                            {% for info_servico in info_servicos %}
+                                <form class="form-servico" method="post" action="{{ url_for('alterar_servico') }}">
+                                    <tr class="linha-servico">
+                                        <td class="item-servico"><input class="input-servico" type="text" id="id" name="id" value="{{ info_servico[0]}}"  placeholder="ID" readonly></td>
+                                        <td class="item-servico"><input class="input-servico" type="text" id="descricao" name="descricao" value="{{ info_servico[1]}}"  placeholder="Valor"></td>
+                                        <td class="item-servico">
+                                            <input type="text" id="{{ info_servico[2] }}" name="valor" class="input-valor" value="{{ info_servico[2] }}" placeholder="R$ 0,00">
+                                        </td>
+                                        <td class="item-servico">
+                                            <button class="botao-alterar-servico" name="comando" value="{{ info_servico[0]}}-salvar-{{ info_servico[3] }}-salvar">
+                                                <img class="imagem-botao" src="/static/images/icone-salvar.png" alt="Logo">
+                                            </button>
+                                            <button class="botao-alterar-servico" name="comando" value="{{ info_servico[0] }}-excluir-{{ info_servico[3] }}">
+                                                <img class="imagem-botao" src="/static/images/icone-excluir.png" alt="Logo">
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </form>
+                            {% endfor %}
                             </tbody>
-                            </table>
-                        </form>
-                {% endif %}
+                        </table>
+                    {% endif %}
+                <br>
+                <br>
+                <form class="form-servico" method="post" action="{{ url_for('novo_servico') }}">
+                    <button class="botao-colorido" name="os_id" value="{{ info_os[0] }}">Adicionar</button>
+                </form>
             </div>
         </div>
-
     {% endif %}
 </div>
 {% if os %}
@@ -132,7 +161,8 @@
                 <th class="titulo-tabela"><button class="botao-filtro" name="filtro_tabela" value="data_chegada">Data de chegada</button></th>
                 <th class="titulo-tabela"><button class="botao-filtro" name="filtro_tabela" value="data_entrega">Data de entrega</button></th>
                 <th class="titulo-tabela"><button class="botao-filtro" name="filtro_tabela" value="finalizado">Finalizado</button></th>
-                <th class="titulo-tabela">Atualizar</th>
+                <th class="titulo-tabela">Valor total</th>
+                <th class="titulo-tabela">Editar</th>
             </form>
         </tr>
         {% for dado in os %}
@@ -142,25 +172,51 @@
                 <td>{{dado.endereco}}</td>
                 <td><input class="input-tabela" type="date" value="{{dado.data_chegada}}" readonly></td>
                 <td><input class="input-tabela" type="date" value="{{dado.data_entrega}}" readonly></td>
-                <td>{{dado.finalizado}}</td>    
+                <td>{{dado.finalizado}}</td>
+                <td>{{valores[dado.id]}}</td>
                 <td>
                     <form method="post" action="{{ url_for('editar_os') }}">
-                        <button name="os_id" value="{{dado.id}}">Editar</button>
+                        <button class="botao-tabela" name="os_id" value="{{dado.id}}">
+                            <img class="imagem-botao-tabela" src="/static/images/icone-abrir.png" alt="Logo">
+                        </button>
                     </form>
                 </td>  
             </tr>
         {% endfor %}
     </table>
+{% else %}
+    <div class="filtros">
+        <h4>Nenhum cadastro encontrado :/</h4>
+    </div>
 {% endif %}
 <script>
-    // Inicialize o campo de entrada usando autoNumeric
-    var inputElement = document.getElementById('valor');
-    var formatter = new AutoNumeric(inputElement, {
-        currencySymbol: 'R$ ',
-        decimalCharacter: ',',
-        digitGroupSeparator: '.',
-        currencySymbolPlacement: 'p',
-        decimalPlaces: 2
+    document.addEventListener('DOMContentLoaded', function () {
+        // Inicialize os campos de entrada usando autoNumeric
+        var options = {
+            currencySymbol: 'R$ ',
+            decimalCharacter: ',',
+            digitGroupSeparator: '.',
+            currencySymbolPlacement: 'p',
+            decimalPlaces: 2
+        };
+
+        var inputs = document.querySelectorAll('.input-valor');
+        inputs.forEach(function(input) {
+            new AutoNumeric(input, options);
+        });
     });
+</script>
+<script>
+    // Função para definir o foco no campo de entrada ao carregar a página
+    function definirFoco() {
+        // Obter o elemento de entrada pelo ID
+        var campoInput = document.getElementById("buscar");
+
+        // Definir o foco no campo de entrada
+        campoInput.focus();
+    }
+
+    // Chamar a função ao carregar a página
+    window.onload = definirFoco;
 </script>
 {% endblock %}

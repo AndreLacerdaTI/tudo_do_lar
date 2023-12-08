@@ -13,19 +13,6 @@
             <button class="menu-botoes" name="endereco" value="manutencao">Manutenção</button>
             <button class="menu-botoes" name="endereco" value="relatorio">Relatorios</button>
         </form>
-        <form class="form-menu" method="post" action="{{ url_for('alternar_tema') }}">
-            <button class="menu-botoes" name="endereco" value="index">Alterar tema</button>
-            <!-- Rounded switch -->
-            <label class="switch">
-                {% if tema=='branco' %}
-                <input type="checkbox" name="botao_checkbox" value="branco" checked>
-                <span class="slider round"></span>
-                {% elif tema=='laranja' %}
-                    <input type="checkbox" name="botao_checkbox" value="laranja">
-                    <span class="slider round"></span>
-                {% endif %}
-            </label>
-        </form>
     </div>
 {% endblock %}
 {% block container %}
