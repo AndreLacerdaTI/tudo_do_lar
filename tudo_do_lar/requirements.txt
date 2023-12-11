@@ -1,0 +1,6 @@
+pip
+
+pip install flask
+pip install qrcode
+pip install datetime
+pip install plotly

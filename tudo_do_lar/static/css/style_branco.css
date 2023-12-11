@@ -61,6 +61,22 @@ body{
     color: #FFFFFF;
 }
 
+.menu-botoes-pesquisar{
+    background-color: #E8812000;
+    color: #FFFFFF4D;
+    border: 0;
+    text-align: center;
+    padding: 10px 10px;
+    font-family: 'Roboto Slab', serif;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+
+    transition: 0.2s;
+}
+
+
 /* Opção branco */
 .menu{
     background-color: #ffffff;
@@ -117,7 +133,7 @@ body{
 
 .input-sub-menu{
     margin: 0;
-    width: 300px;
+    width: 0px;
     height: 35px;
 }
 
@@ -382,6 +398,7 @@ input, select{
     width: 80%;
     height: 30px;
     margin: 10px;
+    transition: 1.5s;
 }
 
 input:focus{
@@ -416,7 +433,6 @@ input:focus{
     margin:0 auto;
     border-spacing: 1; 
     border-collapse: collapse; 
-    border-radius: 20px;
     box-shadow: 0 0 10px #484848;
 }
 .titulo-tabela, .botao-filtro{
@@ -468,65 +484,65 @@ tr:hover{
     background-color: #e6e6e6;
 }
 
-/* The switch - the box around the slider */
-.switch {
-    position: relative;
-    display: inline-block;
-    width: 60px;
-    height: 34px;
-  }
+/* Pesquisa animação */
 
-/* Hide default HTML checkbox */
-.switch input {
-    opacity: 0;
-    width: 0;
-    height: 0;
-  }
-  
-  /* The slider */
-  .slider {
+
+.icone-pesquisa{
+    width: 25px;
+    height: 25px;
+    right: 11px;
+    top: 15px;
     position: absolute;
-    cursor: pointer;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: #ccc;
-    -webkit-transition: .4s;
-    transition: .4s;
-  }
-  
-  .slider:before {
-    position: absolute;
-    content: "";
-    height: 26px;
-    width: 26px;
-    left: 4px;
-    bottom: 4px;
-    background-color: white;
-    -webkit-transition: .4s;
-    transition: .4s;
-  }
-  
-  input:checked + .slider {
+    z-index: 2;
+}
+
+.search-box{
+    display: inline-block;
+    position: relative;
+    border-radius: 50px;
+    border: 2px solid #E88120;
+    height: 50px;
+    margin-top: 15px;
     background-color: #E88120;
-  }
-  
-  input:focus + .slider {
-    box-shadow: 0 0 1px #E88120;
-  }
-  
-  input:checked + .slider:before {
-    -webkit-transform: translateX(26px);
-    -ms-transform: translateX(26px);
-    transform: translateX(26px);
-  }
-  
-  /* Rounded sliders */
-  .slider.round {
-    border-radius: 34px;
-  }
-  
-  .slider.round:before {
-    border-radius: 50%;
-  }
+    padding-right: 20px;
+}
+.input-pesquisa {
+    font-family: 'Roboto Slab', serif;
+    font-size: 20px;
+    font-weight: bold;
+    width: 15px;
+    height: 50px;
+    padding: 5px 15px 5px 10px;
+    border: none;
+    box-sizing: border-box;
+    border-radius: 50px 0px 0px 50px;
+    transition: width 800ms cubic-bezier(0.5, -0.5, 0.5, 0.5) 600ms;
+    color: #000000;
+    background-color: #ffffff;
+    margin: 0;
+    z-index: 1;
+}
+.search-box input:focus {
+    outline: none;
+    border: 0;
+    background-color: #ffffff;
+}
+.search-box input:focus, .search-box input:not(:placeholder-shown) {
+    width: 300px;
+    transition: width 800ms cubic-bezier(0.5, -0.5, 0.5, 1.5);
+}
+.search-box input:focus + span, .search-box input:not(:placeholder-shown) + span {
+    bottom: 12px;
+    right: 13px;
+    transition: bottom 300ms ease-out 800ms, right 300ms ease-out 800ms;
+}
+.search-box input:focus + span:after, .search-box input:not(:placeholder-shown) + span:after {
+  top: 0;
+  right: 11px;
+  opacity: 1;
+  transition: top 300ms ease-out 1100ms, right 300ms ease-out 1100ms, opacity 300ms ease 1100ms;
+}
+
+
+/* Serviços */
+

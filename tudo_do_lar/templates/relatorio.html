@@ -2,22 +2,31 @@
 
 {% block title %}
     <title>Relatórios</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 {% endblock %}
 
 {% block menu %}
     <div class="menu" >
         <img class="menu-logo" src="/static/images/Logo-color.png" alt="Logo">
         <form class="form-menu" method="post" action="{{ url_for('menu') }}">
-            <button class="menu-botoes" name="endereco" value="index">Pagina principal</button>
+            <button class="menu-botoes" name="endereco" value="index">Página principal</button>
             <button class="menu-botoes" name="endereco" value="manutencao">Manutenção</button>
-            <button class="menu-botoes-ativo" name="endereco" value="relatorio">Relatorios</button>
+            <button class="menu-botoes" name="endereco" value="estoque">Controle de estoque</button>
+            <button class="menu-botoes-ativo" name="endereco" value="relatorio">Relatórios</button>
         </form>
     </div>
 {% endblock %}
 {% block container %}
     <!-- Exibir a imagem do gráfico -->
-    <h4>Serviços finalizados</h4>
-    <h4>Sim</h4>
-    <h4>Não</h4>
-    <img src="/static/images/graficos/grafico.png" alt="Logo">
+    <div class="container-cadastro">
+        <div class="cadastro">
+            <div id="plotly-chart"></div>
+            <script>
+                // Incorporar o gráfico Plotly no HTML
+                var plotlyChart = document.getElementById('plotly-chart');
+                var plot_json = {{ concluidos_pendentes | safe }};
+                Plotly.react(plotlyChart, plot_json.data, plot_json.layout);
+            </script>
+        </div>
+    </div>
 {% endblock %}

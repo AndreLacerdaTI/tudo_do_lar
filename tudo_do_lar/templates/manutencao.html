@@ -9,13 +9,40 @@
     <div class="menu" >
         <img class="menu-logo" src="/static/images/Logo-color.png" alt="Logo">
         <form class="form-menu" method="post" action="{{ url_for('menu') }}">
-            <button class="menu-botoes" name="endereco" value="index">Pagina principal</button>
+            <button class="menu-botoes" name="endereco" value="index">Página principal</button>
             <button class="menu-botoes-ativo" name="endereco" value="manutencao">Manutenção</button>
-            <button class="menu-botoes" name="endereco" value="relatorio">Relatorios</button>
+            <button class="menu-botoes" name="endereco" value="estoque">Controle de estoque</button>
+            <button class="menu-botoes" name="endereco" value="relatorio">Relatórios</button>
         </form>
+        {% if os %}
+            <form class="search-box" method="post" action="{{ url_for('buscar_cadastro') }}">
+                {% if busca=='texto' %}
+                    <input type="text" class="input-pesquisa" name="buscar" id="buscar" placeholder="" autocomplete="off"/><span></span>
+                    <button class="menu-botoes-pesquisar">
+                        <img class="icone-pesquisa" src="/static/images/icone-pesquisa.png" alt="Logo">
+                    </button>
+
+                {% elif busca=='data' %}
+                    <input class="input-pesquisa" type="date" name="buscar" id="buscar">
+                    <button class="menu-botoes-pesquisar">
+                        <img class="icone-pesquisa" src="/static/images/icone-pesquisa.png" alt="Logo">
+                    </button>
+                {% endif %}
+            </form>
+            <form class="form-menu" method="post" action="{{ url_for('alternar_busca') }}">
+                <button class="menu-botoes">
+                    {% if busca=='texto' %}
+                        <img class="imagem-botao-tabela" src="/static/images/icone-calendario.png" alt="Logo" title="Pesquisar por data">
+                    {% elif busca=='data' %}
+                        <img class="imagem-botao-tabela" src="/static/images/icone-texto.png" alt="Logo" title="Pesquisar por texto">
+                    {% endif %}
+                </button>
+            </form>
+        {% endif %}
     </div>
 {% endblock %}
 {% block container %}
+{% if os %}
 <div class="sub-menu" >
     <form method="post" action="{{ url_for('nova_os') }}">
         <button class="sub-menu-botoes" name="cliente_id" value="teste">Novo serviço</button>
@@ -25,24 +52,8 @@
     </form>
     <form><h1>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h1></form>
     <form></form>
-    <form class="form-sub-menu" method="post" action="{{ url_for('buscar_cadastro') }}">
-        {% if busca=='texto' %}
-            <input focus class="input-sub-menu" type="text" name="buscar" id="buscar" placeholder="Pesquisar: Nome / Telefone">
-        {% elif busca=='data' %}
-            <input class="input-sub-menu" type="date" name="buscar" id="buscar">
-        {% endif %}
-        <button class="sub-menu-botoes">Buscar</button>
-    </form>
-    <form class="form-sub-menu" method="post" action="{{ url_for('alternar_busca') }}">
-        <button class="botao-buscar">
-            {% if busca=='texto' %}
-                <img class="imagem-botao-tabela" src="/static/images/icone-pesquisa-avancada.png" alt="Logo">
-            {% elif busca=='data' %}
-                Aa..
-            {% endif %}
-        </button>
-    </form>
 </div>
+{% endif %}
 {% if filtro %}
     <div class="filtros">
         <h4>Buscando por:</h4>
@@ -74,7 +85,7 @@
                     <label for="finalizado">Finalizado</label><br>
                     <select type="text" id="finalizado" name="finalizado" placeholder="Finalizado">
                         <option value="Sim">Sim</option>
-                        <option value="Não" selected>Não</option selected>
+                        <option value="Não" selected>Não</option>
                     </select>
                     <button class="botao-colorido">OK</button>
                 </form>
@@ -184,9 +195,10 @@
             </tr>
         {% endfor %}
     </table>
-{% else %}
+{% elif filtro %}
     <div class="filtros">
-        <h4>Nenhum cadastro encontrado :/</h4>
+        <h4>Nenhum cadastro encontrado</h4>
+        <h4>:|</h4>
     </div>
 {% endif %}
 <script>

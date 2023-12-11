@@ -38,8 +38,8 @@ def menu():
         valores = valores_dicionario(os)
         return render_template('manutencao.html',os=os,valores=valores,buscar='texto')
     if (endereco == 'relatorio'):
-        grafico = grafico_pizza()
-        return render_template('relatorio.html', imagem=grafico)
+        grafico = concluidos_pendentes()
+        return render_template('relatorio.html', concluidos_pendentes=grafico)
     return render_template(endereco+'.html')
 
 # Pagina de manutenção
@@ -66,6 +66,8 @@ def buscar_cadastro():
     valores = valores_dicionario(os)
     # Se a busca for por data ele exibirá a data formatada nos filtros
     if(session['busca']=='data'):
+        if buscar=='':
+            return render_template('manutencao.html')
         data = buscar.split('-')
         buscar = data[2]+'/'+data[1]+'/'+data[0]
     return render_template('manutencao.html',os=os,valores=valores,filtro=buscar)
@@ -89,12 +91,12 @@ def registrar_os():
     telefone = request.form['telefone']
     endereco = request.form['endereco']
     data_chegada = request.form['data_chegada']
-
+    finalizado = request.form['finalizado']
     if data_chegada=='':
         data_atual = datetime.now()
         # Formatando a data
         data_chegada = data_atual.strftime("%Y-%m-%d")
-    os_id = insert('OS', ['nome','telefone','endereco','data_chegada'], [nome,telefone,endereco,data_chegada])
+    os_id = insert('OS', ['nome','telefone','endereco','data_chegada','finalizado'], [nome,telefone,endereco,data_chegada,finalizado])
     os = select_param('OS', 'id', os_id)
     qr = criar_qrcode(os[0])
     return abrir_editar_os(os_id)
