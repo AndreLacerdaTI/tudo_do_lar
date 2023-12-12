@@ -2,7 +2,7 @@ import sqlite3
 
 # COMANDOS PARA CONTROLE DO BANCO DE DADOS
 
-# Função para 
+# Função para conectar com o banco e retornar dados
 def connect_execute(execute):
     conexao = sqlite3.connect('database.db')
     cursor = conexao.cursor()
@@ -42,6 +42,7 @@ def insert(nome_tabela, colunas, valores):
     inserted_id = cursor.lastrowid
     conexao.commit()
     return inserted_id
+
 def update(nome, telefone, endereco, data_chegada, data_entrega, finalizado, id):
     conn = sqlite3.connect('database.db')
     cur = conn.cursor()

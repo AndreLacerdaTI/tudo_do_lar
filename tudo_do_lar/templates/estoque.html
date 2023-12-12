@@ -17,9 +17,80 @@
     </div>
 {% endblock %}
 {% block container %}
-    <div class="container-cadastro">
-        <div class="cadastro">
-            <h3>Estoque</h3>
-        </div>
+    {% if produtos %}
+    <div class="sub-menu" >
+        <form method="post" action="{{ url_for('adicionar_produto') }}">
+            <button class="sub-menu-botoes" name="cliente_id" value="teste">Adicionar produto</button>
+        </form>
+        <form method="post" action="{{ url_for('estoque') }}">
+            <button class="sub-menu-botoes" name="cliente_id">Atualizar</button>
+        </form>
+        <form><h1>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h1></form>
+        <form></form>
     </div>
+    {% endif %}
+    {% if editar_produto %}
+        <div class="container-cadastro">
+            <div class="cadastro">
+                <h3>Editar produto</h3>
+                <form method="post" action="{{ url_for('alterar_produto') }}">
+                    <label for="id">ID</label><br>
+                    <input type="text" id="id" name="id" value="{{produto[0]}}" placeholder="ID" readonly>
+                    <label for="nome">Nome</label><br>
+                    <input type="text" id="nome" name="nome" value="{{produto[1]}}" placeholder="Nome do produto" required>
+                    <label for="quantidade">Quantidade</label><br>
+                    <input type="text" id="quantidade" name="quantidade" value="{{produto[2]}}" placeholder="Quantidade em estoque" required>
+                    <button class="botao-colorido" name="comando" value="{{produto[0]}}-salvar">Salvar</button>
+                    <button class="botao-colorido" name="comando" value="{{produto[0]}}-excluir">Excluir</button>
+                </form>
+            </div>
+        </div>
+    {% endif %}
+    {% if adicionar_produto %}
+        <div class="container-cadastro">
+            <div class="cadastro">
+                <h3>Adicionar produto</h3>
+                <form method="post" action="{{ url_for('incluir_produto') }}">
+                    <label for="id">ID</label><br>
+                    <input type="text" id="id" name="id" placeholder="ID" readonly>
+                    <label for="nome">Nome</label><br>
+                    <input type="text" id="nome" name="nome" placeholder="Nome do produto" required>
+                    <label for="quantidade">Telefone</label><br>
+                    <input type="text" id="quantidade" name="quantidade" placeholder="Quantidade em estoque" required>
+                    <button class="botao-colorido" name="comando" value="salvar">Salvar</button>
+                    <button class="botao-colorido" name="comando" value="cancelar">Cancelar</button>
+                </form>
+            </div>
+        </div>
+    {% endif %}
+    {% if produtos %}
+        <table class="tabela">
+            <tr>
+                <form method="post" action="{{ url_for('filtrar_estoque') }}">
+                    <th class="titulo-tabela"><button class="botao-filtro" name="filtro_tabela" value="id">ID</button></th>
+                    <th class="titulo-tabela"><button class="botao-filtro" name="filtro_tabela" value="nome">Nome</button></th>
+                    <th class="titulo-tabela"><button class="botao-filtro" name="filtro_tabela" value="quantidade">Quantidade</button></th>
+                    <th class="titulo-tabela">Editar</th>
+                </form>
+            </tr>
+            {% for dado in produtos %}
+                {% if novo_produto== dado[0] %}
+                    <tr style="background-color: green;">
+                {% else %}
+                    <tr>
+                {% endif %}
+                    <td>{{dado[0]}}</td>
+                    <td>{{dado[1]}}</td>
+                    <td>{{dado[2]}}</td>
+                    <td>
+                        <form method="post" action="{{ url_for('editar_produto') }}">
+                            <button class="botao-tabela" name="produto_id" value="{{dado[0]}}">
+                                <img class="imagem-botao-tabela" src="/static/images/icone-abrir.png" alt="Logo">
+                            </button>
+                        </form>
+                    </td> 
+                </tr>
+            {% endfor %}
+        </table>
+    {% endif %}
 {% endblock %}

@@ -1,7 +1,8 @@
 # Importando comandos dos bancos.py
 from banco import *
 
-from relatorios import *
+from scripts.relatorios import *
+from scripts.estoque import *
 
 import qrcode
 
@@ -37,9 +38,14 @@ def menu():
         os = tabela_dicionario_order('OS','id')
         valores = valores_dicionario(os)
         return render_template('manutencao.html',os=os,valores=valores,buscar='texto')
+    
     if (endereco == 'relatorio'):
         grafico = concluidos_pendentes()
         return render_template('relatorio.html', concluidos_pendentes=grafico)
+    
+    if (endereco == 'estoque'):
+        return estoque()
+    
     return render_template(endereco+'.html')
 
 # Pagina de manutenção
@@ -173,6 +179,58 @@ def alterar_servico():
     elif comando[1]=='excluir':
         delete('Servicos',id)
     return abrir_editar_os(os_id)
+
+
+@app.route('/estoque', methods=['POST'])
+def estoque():
+    produtos = select_estoque('produtos','')
+    return render_template('estoque.html',produtos=produtos)
+
+@app.route('/editar_produto', methods=['POST'])
+def editar_produto():
+    produto_id = request.form['produto_id']
+    produto = select_param('produtos', 'id', produto_id)
+    return render_template('estoque.html',editar_produto=True,produto=produto[0])
+
+@app.route('/alterar_produto', methods=['POST'])
+def alterar_produto():
+    comando = request.form['comando']
+    comando = comando.split('-')
+    id = request.form['id']
+    nome = request.form['nome']
+    quantidade = request.form['quantidade']
+    if comando[1]=='salvar':
+        nome = nome.upper()
+        update_estoque(nome, quantidade, id)
+    elif comando[1]=='excluir':
+        delete('produtos', id)
+        print('Excluido',id)
+    return estoque()
+
+@app.route('/adicionar_produto', methods=['POST'])
+def adicionar_produto():
+    return render_template('estoque.html',adicionar_produto=True)
+
+@app.route('/incluir_produto', methods=['POST'])
+def incluir_produto():
+    produtos = select_estoque('produtos','')
+    comando = request.form['comando']
+    if comando=='salvar':
+        id = request.form['id']
+        nome = request.form['nome']
+        quantidade = request.form['quantidade']
+        id = insert_estoque('produtos', ['nome','quantidade'], [nome,quantidade])
+    
+        return render_template('estoque.html',produtos=produtos,novo_produto=id)
+    else:
+        return render_template('estoque.html',produtos=produtos)
+
+
+@app.route('/filtrar_estoque', methods=['POST'])
+def filtrar_estoque():
+    filtro_tabela = request.form['filtro_tabela']
+    produtos = select_estoque('produtos','ORDER BY '+filtro_tabela)
+    return render_template('estoque.html',produtos=produtos)
 
 def criar_qrcode(valor):
         # Dados que você deseja codificar no QR code

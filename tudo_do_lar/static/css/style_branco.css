@@ -398,7 +398,7 @@ input, select{
     width: 80%;
     height: 30px;
     margin: 10px;
-    transition: 1.5s;
+    transition: 0.2s;
 }
 
 input:focus{
