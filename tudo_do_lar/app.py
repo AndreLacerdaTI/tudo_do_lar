@@ -40,8 +40,9 @@ def menu():
         return render_template('manutencao.html',os=os,valores=valores,buscar='texto')
     
     if (endereco == 'relatorio'):
-        grafico = concluidos_pendentes()
-        return render_template('relatorio.html', concluidos_pendentes=grafico)
+        #grafico = concluidos_pendentes()
+        #comprar_produtos = produtos_acabando()
+        return buscar_todos_relatorios(10)
     
     if (endereco == 'estoque'):
         return estoque()
@@ -183,13 +184,13 @@ def alterar_servico():
 
 @app.route('/estoque', methods=['POST'])
 def estoque():
-    produtos = select_estoque('produtos','')
+    produtos = select_estoque('Produtos','')
     return render_template('estoque.html',produtos=produtos)
 
 @app.route('/editar_produto', methods=['POST'])
 def editar_produto():
     produto_id = request.form['produto_id']
-    produto = select_param('produtos', 'id', produto_id)
+    produto = select_param_estoque('Produtos', 'id', produto_id)
     return render_template('estoque.html',editar_produto=True,produto=produto[0])
 
 @app.route('/alterar_produto', methods=['POST'])
@@ -197,13 +198,17 @@ def alterar_produto():
     comando = request.form['comando']
     comando = comando.split('-')
     id = request.form['id']
+    codigo = request.form['codigo']
     nome = request.form['nome']
     quantidade = request.form['quantidade']
+    unidade = request.form['unidade']
+    quantidade_minima = request.form['quantidade_minima']
+    preco = request.form['preco']
     if comando[1]=='salvar':
         nome = nome.upper()
         update_estoque(nome, quantidade, id)
     elif comando[1]=='excluir':
-        delete('produtos', id)
+        delete('Produtos', id)
         print('Excluido',id)
     return estoque()
 
@@ -213,13 +218,13 @@ def adicionar_produto():
 
 @app.route('/incluir_produto', methods=['POST'])
 def incluir_produto():
-    produtos = select_estoque('produtos','')
+    produtos = select_estoque('Produtos','')
     comando = request.form['comando']
     if comando=='salvar':
         id = request.form['id']
         nome = request.form['nome']
         quantidade = request.form['quantidade']
-        id = insert_estoque('produtos', ['nome','quantidade'], [nome,quantidade])
+        id = insert_estoque('Produtos', ['nome','quantidade'], [nome,quantidade])
     
         return render_template('estoque.html',produtos=produtos,novo_produto=id)
     else:
@@ -229,8 +234,23 @@ def incluir_produto():
 @app.route('/filtrar_estoque', methods=['POST'])
 def filtrar_estoque():
     filtro_tabela = request.form['filtro_tabela']
-    produtos = select_estoque('produtos','ORDER BY '+filtro_tabela)
+    produtos = select_estoque('Produtos','ORDER BY '+filtro_tabela)
     return render_template('estoque.html',produtos=produtos)
+
+@app.route('/filtrar_quantidade_estoque', methods=['POST'])
+def filtrar_quantidade_estoque():
+    filtro_quantidade = request.form['filtro_quantidade']
+    return buscar_todos_relatorios(filtro_quantidade)
+
+def buscar_todos_relatorios(filtro):
+    grafico = concluidos_pendentes()
+    if filtro:
+        comprar_produtos = select_estoque('Produtos','WHERE quantidade < '+str(filtro)+' ORDER BY quantidade')
+    else:
+        comprar_produtos = produtos_acabando()
+    return render_template('relatorio.html', concluidos_pendentes=grafico, comprar_produtos=comprar_produtos)
+
+
 
 def criar_qrcode(valor):
         # Dados que você deseja codificar no QR code

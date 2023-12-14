@@ -11,13 +11,12 @@ def connect_execute_estoque(execute):
 
 def select_estoque(nome_tabela,comando):
     # O parametro 'comando' receberá o restante do select, como por exemplo: ORDER BY nome
-    conexao = sqlite3.connect('estoque.db')
     comando_select = ("SELECT * FROM "+nome_tabela+" "+comando)
     cursor = connect_execute_estoque(comando_select)
     dados = cursor.fetchall()
     return dados
 
-def select_param(nome_tabela, coluna, valor):
+def select_param_estoque(nome_tabela, coluna, valor):
     conexao = sqlite3.connect('estoque.db')
     cursor = conexao.cursor()
     cursor.execute("SELECT * FROM "+nome_tabela+" WHERE "+coluna+" = ?",(valor,))
@@ -27,7 +26,7 @@ def select_param(nome_tabela, coluna, valor):
 def update_estoque(nome, quantidade, id):
     conn = sqlite3.connect('estoque.db')
     cur = conn.cursor()
-    cur.execute('UPDATE produtos SET nome = ?, quantidade = ? WHERE id = ?', (nome, quantidade, id))
+    cur.execute('UPDATE Produtos SET nome = ?, quantidade = ? WHERE id = ?', (nome, quantidade, id))
     conn.commit()
     conn.close()
 

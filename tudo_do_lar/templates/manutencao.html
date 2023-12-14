@@ -17,7 +17,7 @@
         {% if os %}
             <form class="search-box" method="post" action="{{ url_for('buscar_cadastro') }}">
                 {% if busca=='texto' %}
-                    <input type="text" class="input-pesquisa" name="buscar" id="buscar" placeholder="" autocomplete="off"/><span></span>
+                    <input type="text" class="input-pesquisa" name="buscar" id="buscar" placeholder="nome / telefone" autocomplete="off"/><span></span>
                     <button class="menu-botoes-pesquisar">
                         <img class="icone-pesquisa" src="/static/images/icone-pesquisa.png" alt="Logo">
                     </button>
@@ -29,7 +29,7 @@
                     </button>
                 {% endif %}
             </form>
-            <form class="form-menu" method="post" action="{{ url_for('alternar_busca') }}">
+            <form method="post" action="{{ url_for('alternar_busca') }}">
                 <button class="menu-botoes">
                     {% if busca=='texto' %}
                         <img class="imagem-botao-tabela" src="/static/images/icone-calendario.png" alt="Logo" title="Pesquisar por data">

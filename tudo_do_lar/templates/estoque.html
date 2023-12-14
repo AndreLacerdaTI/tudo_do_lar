@@ -36,10 +36,29 @@
                 <form method="post" action="{{ url_for('alterar_produto') }}">
                     <label for="id">ID</label><br>
                     <input type="text" id="id" name="id" value="{{produto[0]}}" placeholder="ID" readonly>
+                    <label for="codigo">Código de barras</label><br>
+                    <input type="text" id="codigo" name="codigo" value="{{produto[1]}}" placeholder="Código de Barras">
                     <label for="nome">Nome</label><br>
-                    <input type="text" id="nome" name="nome" value="{{produto[1]}}" placeholder="Nome do produto" required>
+                    <input type="text" id="nome" name="nome" value="{{produto[2]}}" placeholder="Nome do produto" required>
                     <label for="quantidade">Quantidade</label><br>
-                    <input type="text" id="quantidade" name="quantidade" value="{{produto[2]}}" placeholder="Quantidade em estoque" required>
+                    <input type="text" id="quantidade" name="quantidade" value="{{produto[3]}}" placeholder="Quantidade em estoque" required>
+                    <label for="unidade">Unidade</label><br>
+                    <select type="text" id="unidade" name="unidade">
+                        <option value="UN" selected>Unidade</option>
+                        <option value="PC">Pacote</option>
+                        <option value="CX">Caixa</option>
+                        <option value="KG">Quilograma</option>
+                        <option value="M">Metro</option>
+                        <option value="PR">Par</option>
+                        <option value="RL">Rolo</option>
+                        <option value="KT">Kit</option>
+                        <option value="DZ">Dúzia</option>
+                        <option value="L">Litro</option>
+                    </select>
+                    <label for="quantidade_minima">Quantidade mínima</label><br>
+                    <input type="text" id="quantidade_minima" name="quantidade_minima" value="{{produto[5]}}" placeholder="Quantidade mínima de estoque">
+                    <label for="preco">Preço</label><br>
+                    <input type="text" id="preco" name="preco" value="{{produto[6]}}" placeholder="Preço de venda">
                     <button class="botao-colorido" name="comando" value="{{produto[0]}}-salvar">Salvar</button>
                     <button class="botao-colorido" name="comando" value="{{produto[0]}}-excluir">Excluir</button>
                 </form>
@@ -68,8 +87,10 @@
             <tr>
                 <form method="post" action="{{ url_for('filtrar_estoque') }}">
                     <th class="titulo-tabela"><button class="botao-filtro" name="filtro_tabela" value="id">ID</button></th>
+                    <th class="titulo-tabela"><button class="botao-filtro" name="filtro_tabela" value="codigo">Código de Barras</button></th>
                     <th class="titulo-tabela"><button class="botao-filtro" name="filtro_tabela" value="nome">Nome</button></th>
                     <th class="titulo-tabela"><button class="botao-filtro" name="filtro_tabela" value="quantidade">Quantidade</button></th>
+                    <th class="titulo-tabela"><button class="botao-filtro" name="filtro_tabela" value="preco">Preço</button></th>
                     <th class="titulo-tabela">Editar</th>
                 </form>
             </tr>
@@ -82,6 +103,8 @@
                     <td>{{dado[0]}}</td>
                     <td>{{dado[1]}}</td>
                     <td>{{dado[2]}}</td>
+                    <td>{{dado[3]}}</td>
+                    <td class="campo-preco">{{dado[6]}}</td>
                     <td>
                         <form method="post" action="{{ url_for('editar_produto') }}">
                             <button class="botao-tabela" name="produto_id" value="{{dado[0]}}">
@@ -93,4 +116,21 @@
             {% endfor %}
         </table>
     {% endif %}
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Inicialize os campos de entrada usando autoNumeric
+            var options = {
+                currencySymbol: 'R$ ',
+                decimalCharacter: ',',
+                digitGroupSeparator: '.',
+                currencySymbolPlacement: 'p',
+                decimalPlaces: 2
+            };
+    
+            var inputs = document.querySelectorAll('.campo-preco');
+            inputs.forEach(function(input) {
+                new AutoNumeric(input, options);
+            });
+        });
+    </script>
 {% endblock %}

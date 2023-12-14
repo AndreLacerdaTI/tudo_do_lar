@@ -5,12 +5,12 @@ import sqlite3
 planilha = pd.read_excel('./planilha.xlsx')
 
 # Conectar ao banco de dados SQLite
-conn = sqlite3.connect('seu_banco_de_dados.db')
+conn = sqlite3.connect('estoque.db')
 cursor = conn.cursor()
 
 # Criar a tabela no banco de dados
 cursor.execute('''
-    CREATE TABLE IF NOT EXISTS produtos (
+    CREATE TABLE IF NOT EXISTS Produtos (
         id INTEGER PRIMARY KEY,
         nome TEXT,
         quantidade INTEGER

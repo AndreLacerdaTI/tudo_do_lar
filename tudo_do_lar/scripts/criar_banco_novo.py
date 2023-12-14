@@ -36,8 +36,11 @@ cursor.execute(CriarTabelaClientes)
 cursor.execute(CriarTabelaServico)
 cursor.execute(CriarTabelaItem)                        
                         
-
 '''
+# Banco produtos
+'''
+
+
 CriarTabelaOS = """ CREATE TABLE IF NOT EXISTS OS (
                         id integer PRIMARY KEY AUTOINCREMENT,
                         nome text NOT NULL,
@@ -61,3 +64,20 @@ conexao = sqlite3.connect('database.db')
 cursor = conexao.cursor()
 cursor.execute(CriarTabelaOS)
 cursor.execute(CriarTabelaServico)
+'''
+
+# Banco Produtos com estoque, codigo de barras e preço
+
+CriarTabelaProdutos = """ CREATE TABLE IF NOT EXISTS Produtos (
+                        id integer PRIMARY KEY AUTOINCREMENT,
+                        codigo integer INTEGER,
+                        nome text NOT NULL,
+                        quantidade INTEGER,
+                        unidade TEXT,
+                        quantidade_minima INTEGER,
+                        preco REAL
+                        ); """
+
+conexao = sqlite3.connect('estoque.db')
+cursor = conexao.cursor()
+cursor.execute(CriarTabelaProdutos)

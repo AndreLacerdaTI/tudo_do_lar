@@ -1,6 +1,7 @@
 import plotly.express as px
 
 from banco import *
+from scripts.estoque import *
 
 def concluidos_pendentes():
     dados = select('OS','finalizado')
@@ -46,3 +47,8 @@ def gerar_grafico(dados):
 
     return plot_json
     #return plot_html
+
+def produtos_acabando():
+    #produtos = select_param_estoque('produtos', 'quantidade', '10')
+    produtos = select_estoque('Produtos','WHERE quantidade < 10 ORDER BY quantidade')
+    return produtos

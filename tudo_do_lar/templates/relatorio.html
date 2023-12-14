@@ -17,6 +17,7 @@
     </div>
 {% endblock %}
 {% block container %}
+<div class="container">
     <!-- Exibir a imagem do gráfico -->
     <div class="container-cadastro">
         <div class="cadastro">
@@ -29,4 +30,28 @@
             </script>
         </div>
     </div>
+    <div class="container-direita">
+        <div class="cadastro">
+            <form class="form-menu" method="post" action="{{ url_for('filtrar_quantidade_estoque') }}">
+                <label for="filtro_quantidade">Produtos com quantidades abaixo de </label>
+                <input type="text" id="filtro_quantidade" name="filtro_quantidade" placeholder="10">
+            </form>
+            {% if comprar_produtos %}
+            <table>
+                <tr>
+                    <th class="titulo-tabela">Nome</th>
+                    <th class="titulo-tabela">Quantidade em estoque</th>
+                </tr>
+                {% for produto in comprar_produtos %}
+                <tr>
+                    <td>{{ produto[1] }}</td>
+                    <td>{{produto[2]}} </td>
+                </tr>
+                {% endfor %}
+                <tr>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tr>
+            </table>
+            {% endif %}
+        </div>
+    </div>
+</div>
 {% endblock %}
