@@ -50,5 +50,14 @@ def gerar_grafico(dados):
 
 def produtos_acabando():
     #produtos = select_param_estoque('produtos', 'quantidade', '10')
-    produtos = select_estoque('Produtos','WHERE quantidade < 10 ORDER BY quantidade')
-    return produtos
+    produtos = select_estoque('Produtos','ORDER BY quantidade')
+    quantidade_baixa = []
+    for produto in produtos:
+        quant_atual = int(produto[3])
+        if type(produto[5])!=int:
+            quant_minima = 0
+        else:
+            quant_minima = int(produto[5])
+        if (quant_atual - quant_minima) <= 10:
+            quantidade_baixa.append(produto)
+    return quantidade_baixa

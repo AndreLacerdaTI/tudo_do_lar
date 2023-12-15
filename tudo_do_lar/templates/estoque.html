@@ -14,9 +14,50 @@
             <button class="menu-botoes-ativo" name="endereco" value="estoque">Controle de estoque</button>
             <button class="menu-botoes" name="endereco" value="relatorio">Relatórios</button>
         </form>
+        <form class="search-box" method="post" action="{{ url_for('pesquisar_quantidade_estoque') }}">
+            <input class="input-pesquisa" type="text" id="filtro_quantidade" name="filtro_quantidade" placeholder="Quantidade <" autocomplete="off">
+            <button class="menu-botoes-pesquisar">
+                <img class="icone-pesquisa" src="/static/images/icone-pesquisa.png" alt="Logo">
+            </button>
+        </form>
+        <form><h1>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h1></form>
+        <form class="form-planilha" method="post" action="{{ url_for('exportar_planilha_estoque') }}">
+            <input class="esconder" type="text" name="filtro_quantidade" value="{{filtro_quantidade}}">
+            <button class="botao-planilha" name="exportar" value="estoque" title="Exportar planilha">
+                <img class="imagem-botao-planilha" src="/static/images/icone-planilha.png" alt="Logo">
+            </button>
+        </form>
     </div>
 {% endblock %}
 {% block container %}
+    {% if baixar_arquivo %}
+        <div class="plano-fundo">
+            <h3>Planilha pronta!</h3>
+            <h4>Clique no icone abaixo para fazer o download</h4>
+            <a href="{{ baixar_arquivo }}" download>
+                <button class="botao-planilha">
+                    <img class="imagem-botao-planilha" src="/static/images/icone-planilha.png" alt="Logo">
+                </button>
+            </a>
+            <br>
+            <br>
+            <form class="form-download-planilha" method="post" action="{{ url_for('estoque') }}">
+                <input type="text" class="esconder" name="endereco" value="estoque">
+                <button class="botao-colorido">Fechar</button>
+            </form>
+        </div>
+    {% endif %}
+    {% if filtro_quantidade %}
+        <div class="filtros">
+            <h5>Buscando por produtos com quantidade em estoque menores que:</h5>
+            <form class="form-filtros" method="post" action="{{ url_for('estoque') }}">
+                <button class="botao-filtro-ativo" value="{{filtro_quantidade}}">
+                    <h4 class="texto-filtro">{{filtro_quantidade}}</h4>
+                    <img class="imagem-botao-filtro" src="/static/images/icone-fechar.png" alt="Logo">
+                </button>
+            </form>
+        </div>
+    {% endif %}
     {% if produtos %}
     <div class="sub-menu" >
         <form method="post" action="{{ url_for('adicionar_produto') }}">
@@ -34,7 +75,7 @@
             <div class="cadastro">
                 <h3>Editar produto</h3>
                 <form method="post" action="{{ url_for('alterar_produto') }}">
-                    <label for="id">ID</label><br>
+                    <label for="id" title="Código de identificação do produto no sistema, não é permitido alterações">ID (?)</label><br>
                     <input type="text" id="id" name="id" value="{{produto[0]}}" placeholder="ID" readonly>
                     <label for="codigo">Código de barras</label><br>
                     <input type="text" id="codigo" name="codigo" value="{{produto[1]}}" placeholder="Código de Barras">
@@ -55,7 +96,10 @@
                         <option value="DZ">Dúzia</option>
                         <option value="L">Litro</option>
                     </select>
-                    <label for="quantidade_minima">Quantidade mínima</label><br>
+                    <label for="quantidade_minima" 
+                    title="Se o estoque atingir essa quantidade você será notificado">
+                        Quantidade mínima (?)
+                    </label><br>
                     <input type="text" id="quantidade_minima" name="quantidade_minima" value="{{produto[5]}}" placeholder="Quantidade mínima de estoque">
                     <label for="preco">Preço</label><br>
                     <input type="text" id="preco" name="preco" value="{{produto[6]}}" placeholder="Preço de venda">

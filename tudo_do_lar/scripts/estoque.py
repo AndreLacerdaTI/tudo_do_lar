@@ -1,4 +1,6 @@
 import sqlite3
+from openpyxl import Workbook
+import pandas as pd
 
 # COMANDOS PARA CONTROLE DO BANCO DE DADOS
 
@@ -23,10 +25,10 @@ def select_param_estoque(nome_tabela, coluna, valor):
     dados = cursor.fetchall()
     return dados
 
-def update_estoque(nome, quantidade, id):
+def update_estoque(codigo, nome, quantidade, unidade, quantidade_minima, preco, id):
     conn = sqlite3.connect('estoque.db')
     cur = conn.cursor()
-    cur.execute('UPDATE Produtos SET nome = ?, quantidade = ? WHERE id = ?', (nome, quantidade, id))
+    cur.execute('UPDATE Produtos SET codigo = ?, nome = ?, quantidade = ?, unidade = ?, quantidade_minima = ?, preco = ? WHERE id = ?', (codigo, nome, quantidade, unidade, quantidade_minima, preco, id))
     conn.commit()
     conn.close()
 
@@ -49,3 +51,39 @@ def delete(nome_tabela, id):
     cur.execute("DELETE FROM "+nome_tabela+" WHERE id=?", (id,))
     conn.commit()
     conn.close()
+
+def exportar_tabela_para_excel(nome_banco, nome_tabela, comando, campos, nome_arquivo_excel):
+    # Conectar ao banco de dados SQLite
+    conn = sqlite3.connect(nome_banco)
+    cursor = conn.cursor()
+
+    # Construir a string SQL para selecionar os campos específicos
+    campos_str = ', '.join(campos)
+    print(comando)
+    query_sql = f'SELECT {campos_str} FROM {nome_tabela} {comando}'
+
+    # Executar a consulta para obter os dados da tabela
+    cursor.execute(query_sql)
+    dados_tabela = cursor.fetchall()
+
+    # Fechar a conexão com o banco de dados
+    conn.close()
+
+    # Criar um novo arquivo Excel
+    wb = Workbook()
+    planilha = wb.active
+
+    # Adicionar cabeçalho (nomes dos campos)
+    planilha.append(campos)
+
+    # Adicionar os dados da tabela
+    for linha in dados_tabela:
+        planilha.append(linha)
+
+    # Salvar o arquivo Excel
+    caminho = './static/planilhas/'+nome_arquivo_excel
+    wb.save(caminho)
+    # Retorna o caminho sem o "." para o html encontrar o arquivo para download
+    return caminho[1:]
+    #print(f'O arquivo Excel "{nome_arquivo_excel}" foi criado com sucesso.')
+    #return '/static/planilhas/estoque%20baixo.xlsx'

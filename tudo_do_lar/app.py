@@ -43,6 +43,7 @@ def menu():
         #grafico = concluidos_pendentes()
         #comprar_produtos = produtos_acabando()
         return buscar_todos_relatorios(10)
+        #return render_template('relatorio.html')
     
     if (endereco == 'estoque'):
         return estoque()
@@ -206,7 +207,7 @@ def alterar_produto():
     preco = request.form['preco']
     if comando[1]=='salvar':
         nome = nome.upper()
-        update_estoque(nome, quantidade, id)
+        update_estoque(codigo, nome, quantidade, unidade, quantidade_minima, preco, id)
     elif comando[1]=='excluir':
         delete('Produtos', id)
         print('Excluido',id)
@@ -237,20 +238,30 @@ def filtrar_estoque():
     produtos = select_estoque('Produtos','ORDER BY '+filtro_tabela)
     return render_template('estoque.html',produtos=produtos)
 
-@app.route('/filtrar_quantidade_estoque', methods=['POST'])
-def filtrar_quantidade_estoque():
+@app.route('/pesquisar_quantidade_estoque', methods=['POST'])
+def pesquisar_quantidade_estoque():
     filtro_quantidade = request.form['filtro_quantidade']
-    return buscar_todos_relatorios(filtro_quantidade)
+    comando = 'WHERE quantidade <= %s ORDER BY quantidade' % filtro_quantidade
+    produtos = select_estoque('Produtos',comando)
+
+    return render_template('estoque.html',produtos=produtos, filtro_quantidade=filtro_quantidade)
+
+@app.route('/exportar_planilha_estoque', methods=['POST'])
+def exportar_planilha_estoque():
+    filtro_quantidade = request.form['filtro_quantidade']
+    if filtro_quantidade=='':
+        comando = ''
+    else:
+        comando = 'WHERE quantidade < '+str(filtro_quantidade)
+    baixar_arquivo = exportar_tabela_para_excel('estoque.db', 'Produtos', comando, ['nome', 'quantidade', 'unidade'], 'relatorio estoque.xlsx')
+    
+    return render_template('estoque.html',baixar_arquivo=baixar_arquivo,filtro_quantidade=filtro_quantidade)
+
 
 def buscar_todos_relatorios(filtro):
     grafico = concluidos_pendentes()
-    if filtro:
-        comprar_produtos = select_estoque('Produtos','WHERE quantidade < '+str(filtro)+' ORDER BY quantidade')
-    else:
-        comprar_produtos = produtos_acabando()
+    comprar_produtos = produtos_acabando()
     return render_template('relatorio.html', concluidos_pendentes=grafico, comprar_produtos=comprar_produtos)
-
-
 
 def criar_qrcode(valor):
         # Dados que você deseja codificar no QR code

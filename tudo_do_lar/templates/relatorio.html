@@ -6,6 +6,10 @@
 {% endblock %}
 
 {% block menu %}
+{% if baixar_arquivo %}
+    <div class="plano-fundo">
+    </div>
+{% endif %}
     <div class="menu" >
         <img class="menu-logo" src="/static/images/Logo-color.png" alt="Logo">
         <form class="form-menu" method="post" action="{{ url_for('menu') }}">
@@ -32,10 +36,6 @@
     </div>
     <div class="container-direita">
         <div class="cadastro">
-            <form class="form-menu" method="post" action="{{ url_for('filtrar_quantidade_estoque') }}">
-                <label for="filtro_quantidade">Produtos com quantidades abaixo de </label>
-                <input type="text" id="filtro_quantidade" name="filtro_quantidade" placeholder="10">
-            </form>
             {% if comprar_produtos %}
             <table>
                 <tr>
@@ -44,8 +44,8 @@
                 </tr>
                 {% for produto in comprar_produtos %}
                 <tr>
-                    <td>{{ produto[1] }}</td>
-                    <td>{{produto[2]}} </td>
+                    <td>{{ produto[2] }}</td>
+                    <td>{{ produto[3] }}</td>
                 </tr>
                 {% endfor %}
                 <tr>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tr>

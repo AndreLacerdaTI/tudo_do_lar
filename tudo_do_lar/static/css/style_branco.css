@@ -165,6 +165,7 @@ body{
     background-color: #ffffff;
     align-items: center;
     text-align: center;
+    z-index: 2;
 }
 
 .form-filtros{
@@ -552,6 +553,50 @@ tr:hover{
   transition: top 300ms ease-out 1100ms, right 300ms ease-out 1100ms, opacity 300ms ease 1100ms;
 }
 
+/* Estoque */
 
-/* Serviços */
+.botao-planilha{
+    width: 10px;
+    height: 10px;
+    border: 0;
+    background-color: #FFFFFF00;
+    transition: 0.2s;
+    padding-top: 15px;
+}
 
+.botao-planilha:hover{
+    scale: 1.1;
+}
+
+.imagem-botao-planilha{
+    width: 50px;
+    height: 50px;
+}
+
+.plano-fundo{
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    background-color: #ffffff;
+    position: absolute;
+    text-align: center;
+    align-items: center;
+}
+
+a .botao-planilha {
+    width: 150px;
+    height: 150px;
+}
+
+a .botao-planilha .imagem-botao-planilha{
+    width: 120px;
+    height: 120px;
+}
+
+.form-download-planilha .botao-colorido {
+    width: 300px;
+}
+
+.esconder{
+    display: none;
+}
