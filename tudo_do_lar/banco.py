@@ -117,3 +117,9 @@ def valores_dicionario(os):
         valores[id] = valor_formatado
         valor_formatado = 'Sem serviço'
     return valores
+
+def converir_valores_nulos(valor):
+    if valor=='' or valor=='None':
+        return None
+    else:
+        return valor

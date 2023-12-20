@@ -70,7 +70,7 @@ cursor.execute(CriarTabelaServico)
 
 CriarTabelaProdutos = """ CREATE TABLE IF NOT EXISTS Produtos (
                         id integer PRIMARY KEY AUTOINCREMENT,
-                        codigo integer INTEGER,
+                        codigo TEXT,
                         nome text NOT NULL,
                         quantidade INTEGER,
                         unidade TEXT,

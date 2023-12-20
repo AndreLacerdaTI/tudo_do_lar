@@ -6,6 +6,10 @@ from scripts.estoque import *
 
 import qrcode
 
+from barcode import EAN13
+from barcode.writer import ImageWriter
+
+
 from datetime import datetime
 
 from flask import Flask, render_template, request, session, redirect, url_for
@@ -199,12 +203,19 @@ def alterar_produto():
     comando = request.form['comando']
     comando = comando.split('-')
     id = request.form['id']
-    codigo = request.form['codigo']
-    nome = request.form['nome']
-    quantidade = request.form['quantidade']
-    unidade = request.form['unidade']
-    quantidade_minima = request.form['quantidade_minima']
-    preco = request.form['preco']
+    nome = converir_valores_nulos(request.form['nome'])
+    quantidade = converir_valores_nulos(request.form['quantidade'])
+    unidade = converir_valores_nulos(request.form['unidade'])
+    quantidade_minima = converir_valores_nulos(request.form['quantidade_minima'])
+    preco = converir_valores_nulos(request.form['preco'])
+    if request.method == 'POST':
+        # Verifica se o checkbox foi marcado
+        zeros = '0'*(12-len(id))
+        if 'meuCheckbox' in request.form:
+            codigo = criar_codigo_de_barras(zeros+str(id),id+'-'+nome)
+            print('Checkbox marcado',codigo)
+        else:
+            codigo = request.form['codigo']
     if comando[1]=='salvar':
         nome = nome.upper()
         update_estoque(codigo, nome, quantidade, unidade, quantidade_minima, preco, id)
@@ -286,6 +297,12 @@ def criar_qrcode(valor):
     img.save("static/images/qrCode/%s.png" % valor[0])
     imagem= ("static/images/qrCode/%s.png" % valor[0])
     return imagem
+
+def criar_codigo_de_barras(numero, nome_arquivo):
+    codigo = EAN13(numero, writer=ImageWriter())
+    codigo.save("static/images/codBarras/%s.png" % nome_arquivo)
+    print(numero)
+    return numero
 
 if __name__ == '__main__':
     app.run(debug=True)

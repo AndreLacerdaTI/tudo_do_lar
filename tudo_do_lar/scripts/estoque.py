@@ -28,6 +28,7 @@ def select_param_estoque(nome_tabela, coluna, valor):
 def update_estoque(codigo, nome, quantidade, unidade, quantidade_minima, preco, id):
     conn = sqlite3.connect('estoque.db')
     cur = conn.cursor()
+    print('update_estoque',preco)
     cur.execute('UPDATE Produtos SET codigo = ?, nome = ?, quantidade = ?, unidade = ?, quantidade_minima = ?, preco = ? WHERE id = ?', (codigo, nome, quantidade, unidade, quantidade_minima, preco, id))
     conn.commit()
     conn.close()

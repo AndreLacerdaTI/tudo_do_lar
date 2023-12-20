@@ -75,10 +75,16 @@
             <div class="cadastro">
                 <h3>Editar produto</h3>
                 <form method="post" action="{{ url_for('alterar_produto') }}">
-                    <label for="id" title="Código de identificação do produto no sistema, não é permitido alterações">ID (?)</label><br>
+                    <label for="id">ID<img class="icone-info" src="/static/images/icone-info.png" title="Código de identificação do produto no sistema, não é permitido alterações"  alt="(?)"></label><br>
                     <input type="text" id="id" name="id" value="{{produto[0]}}" placeholder="ID" readonly>
-                    <label for="codigo">Código de barras</label><br>
-                    <input type="text" id="codigo" name="codigo" value="{{produto[1]}}" placeholder="Código de Barras">
+                    <label for="codigo">Código de barras<img class="icone-info" src="/static/images/icone-info.png" title="Digitar código de barras do produto ou marque a opção para gerar um código"  alt="(?)"></label><br>
+                    <div class="div-flex">
+                        <input class="input-menor" type="text" id="codigo" name="codigo" value="{{produto[1]}}" placeholder="Código de Barras">
+                        <div class="checkbox-wrapper-10">
+                            <input class="tgl tgl-flip" id="cb5" type="checkbox" name="meuCheckbox" value="valor_checkbox">
+                            <label class="tgl-btn" data-tg-off="Inserir código" data-tg-on="Gerar código" for="cb5"></label>
+                        </div>
+                    </div>
                     <label for="nome">Nome</label><br>
                     <input type="text" id="nome" name="nome" value="{{produto[2]}}" placeholder="Nome do produto" required>
                     <label for="quantidade">Quantidade</label><br>
@@ -96,13 +102,13 @@
                         <option value="DZ">Dúzia</option>
                         <option value="L">Litro</option>
                     </select>
-                    <label for="quantidade_minima" 
-                    title="Se o estoque atingir essa quantidade você será notificado">
-                        Quantidade mínima (?)
+                    <label for="quantidade_minima" >
+                        Quantidade mínima<img class="icone-info" src="/static/images/icone-info.png" title="Se o estoque atingir essa quantidade você será notificado">
                     </label><br>
-                    <input type="text" id="quantidade_minima" name="quantidade_minima" value="{{produto[5]}}" placeholder="Quantidade mínima de estoque">
+                    <input type="text" id="quantidade_minima" name="quantidade_minima" value="{{ produto[5] | default('') if produto[5] not in [None, 'None', ''] else ''}}" placeholder="Quantidade mínima de estoque">
                     <label for="preco">Preço</label><br>
-                    <input type="text" id="preco" name="preco" value="{{produto[6]}}" placeholder="Preço de venda">
+                    <input type="text" id="preco" name="preco" value="{{ produto[6] | default('Valor padrão') if produto[6] not in [None, 'None', ''] else '' }}" placeholder="Preço de venda">
+                    <!--<input type="text" id="preco" name="preco" value="{{produto[6]}}" placeholder="Preço de venda">-->
                     <button class="botao-colorido" name="comando" value="{{produto[0]}}-salvar">Salvar</button>
                     <button class="botao-colorido" name="comando" value="{{produto[0]}}-excluir">Excluir</button>
                 </form>
@@ -114,12 +120,39 @@
             <div class="cadastro">
                 <h3>Adicionar produto</h3>
                 <form method="post" action="{{ url_for('incluir_produto') }}">
-                    <label for="id">ID</label><br>
+                    <label for="id">ID<img class="icone-info" src="/static/images/icone-info.png" title="Código de identificação do produto no sistema, não é permitido alterações"  alt="(?)"></label><br>
                     <input type="text" id="id" name="id" placeholder="ID" readonly>
+                    <label for="codigo">Código de barras<img class="icone-info" src="/static/images/icone-info.png" title="Digitar código de barras do produto ou marque a opção para gerar um código"  alt="(?)"></label><br>
+                    <div class="div-flex">
+                        <input class="input-menor" type="text" id="codigo" name="codigo" placeholder="Código de Barras">
+                        <div class="checkbox-wrapper-10">
+                            <input class="tgl tgl-flip" id="cb5" type="checkbox" name="meuCheckbox" value="valor_checkbox">
+                            <label class="tgl-btn" data-tg-off="Inserir código" data-tg-on="Gerar código" for="cb5"></label>
+                        </div>
+                    </div>
                     <label for="nome">Nome</label><br>
                     <input type="text" id="nome" name="nome" placeholder="Nome do produto" required>
-                    <label for="quantidade">Telefone</label><br>
+                    <label for="quantidade">Quantidade</label><br>
                     <input type="text" id="quantidade" name="quantidade" placeholder="Quantidade em estoque" required>
+                    <label for="unidade">Unidade</label><br>
+                    <select type="text" id="unidade" name="unidade">
+                        <option value="UN" selected>Unidade</option>
+                        <option value="PC">Pacote</option>
+                        <option value="CX">Caixa</option>
+                        <option value="KG">Quilograma</option>
+                        <option value="M">Metro</option>
+                        <option value="PR">Par</option>
+                        <option value="RL">Rolo</option>
+                        <option value="KT">Kit</option>
+                        <option value="DZ">Dúzia</option>
+                        <option value="L">Litro</option>
+                    </select>
+                    <label for="quantidade_minima" >
+                        Quantidade mínima<img class="icone-info" src="/static/images/icone-info.png" title="Se o estoque atingir essa quantidade você será notificado">
+                    </label><br>
+                    <input type="text" id="quantidade_minima" name="quantidade_minima" placeholder="Quantidade mínima de estoque">
+                    <label for="preco">Preço</label><br>
+                    <input type="text" id="preco" name="preco" placeholder="Preço de venda">
                     <button class="botao-colorido" name="comando" value="salvar">Salvar</button>
                     <button class="botao-colorido" name="comando" value="cancelar">Cancelar</button>
                 </form>
