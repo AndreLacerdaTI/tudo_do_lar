@@ -53,6 +53,34 @@ def delete(nome_tabela, id):
     conn.commit()
     conn.close()
 
+def pesquisar_estoque(filtro_quantidade,sinal):
+    # tratamento do filtro de pesquisa que está armazenado no sessions
+    if sinal == 'igual a':
+        sinal = '=='
+    elif sinal == 'maior que':
+        sinal = '>='
+    elif sinal == 'menor que':
+        sinal = '<='
+    print(filtro_quantidade)
+    print(sinal)
+    comando = 'WHERE quantidade %s %s ORDER BY quantidade' % (sinal, filtro_quantidade)
+    # Pesquisa entre x e y
+    if sinal == 'entre x;y':
+        entre = filtro_quantidade.split(';')
+        conexao = sqlite3.connect('estoque.db')
+        cursor = conexao.cursor()
+        cursor.execute("SELECT * FROM Produtos WHERE quantidade BETWEEN ? AND ? ORDER BY quantidade", (entre[0], entre[1]))
+        dados = cursor.fetchall()
+        return dados
+    elif sinal == 'texto':
+        conexao = sqlite3.connect('estoque.db')
+        cursor = conexao.cursor()
+        cursor.execute("SELECT * FROM Produtos WHERE nome LIKE '%' || ? || '%' OR id LIKE '%' || ? || '%'", (filtro_quantidade,filtro_quantidade))
+        dados = cursor.fetchall()
+        return dados
+    produtos = select_estoque('Produtos',comando)
+    return produtos
+
 def exportar_tabela_para_excel(nome_banco, nome_tabela, comando, campos, nome_arquivo_excel):
     # Conectar ao banco de dados SQLite
     conn = sqlite3.connect(nome_banco)

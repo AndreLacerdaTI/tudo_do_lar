@@ -15,10 +15,30 @@
             <button class="menu-botoes" name="endereco" value="relatorio">Relatórios</button>
         </form>
         <form class="search-box" method="post" action="{{ url_for('pesquisar_quantidade_estoque') }}">
-            <input class="input-pesquisa" type="text" id="filtro_quantidade" name="filtro_quantidade" placeholder="Quantidade <" autocomplete="off">
+            {% if session['pesquisar']=='texto' %}
+                <input class="input-pesquisa" type="text" id="filtro_quantidade" name="filtro_quantidade" placeholder="id / nome" autocomplete="off">
+            {% else %}
+                <input class="input-pesquisa" type="text" id="filtro_quantidade" name="filtro_quantidade" placeholder="Quantidade {{session['pesquisar']}}" autocomplete="off">
+            {% endif %}
             <button class="menu-botoes-pesquisar">
                 <img class="icone-pesquisa" src="/static/images/icone-pesquisa.png" alt="Logo">
             </button>
+        </form>
+        <form class="form-menu" method="post" action="{{ url_for('alternar_busca_estoque') }}">
+            <div class="dropdown">
+                <img class="imagem-botao-tabela" src="/static/images/icone-filtro-checked.png" title="Alterar modo de pesquisa">
+                <div class="dropdown-content">
+                    <h4>Filtros</h4>
+                    <select name="filtro_pesquisa" id="">
+                        <option value="texto">Geral</option>
+                        <option value="igual a">Igual a</option>
+                        <option value="maior que">Maior que</option>
+                        <option value="menor que">Menor que</option>
+                        <option value="entre x;y">Entre</option>
+                    </select>
+                    <button class="botao-colorido">Ok</button>
+                </div>
+            </div>
         </form>
         <form><h1>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h1></form>
         <form class="form-planilha" method="post" action="{{ url_for('exportar_planilha_estoque') }}">
@@ -49,7 +69,7 @@
     {% endif %}
     {% if filtro_quantidade %}
         <div class="filtros">
-            <h5>Buscando por produtos com quantidade em estoque menores que:</h5>
+            <h5>Buscando por produtos em estoque com quantidade {{session['pesquisar']}}:</h5>
             <form class="form-filtros" method="post" action="{{ url_for('estoque') }}">
                 <button class="botao-filtro-ativo" value="{{filtro_quantidade}}">
                     <h4 class="texto-filtro">{{filtro_quantidade}}</h4>
@@ -192,6 +212,12 @@
                 </tr>
             {% endfor %}
         </table>
+    {% else %}
+        <div class="filtros">
+            <h4>Nenhum produto encontrado</h4>
+            <img class="imagem-botao-tabela" src="/static/images/icone-nao-encontrado.png" alt="Logo">
+            <h4>:|</h4>
+        </div>
     {% endif %}
     <script>
         document.addEventListener('DOMContentLoaded', function () {

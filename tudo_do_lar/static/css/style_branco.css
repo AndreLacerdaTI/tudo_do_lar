@@ -570,8 +570,8 @@ tr:hover{
 /* Estoque */
 
 .botao-planilha{
-    width: 10px;
-    height: 10px;
+    width: 50px;
+    height: 50px;
     border: 0;
     background-color: #FFFFFF00;
     transition: 0.2s;
@@ -731,4 +731,44 @@ a .botao-planilha .imagem-botao-planilha{
   }
   .checkbox-wrapper-10 .tgl-flip:checked + .tgl-btn:active:after {
     transform: rotateY(20deg);
+  }
+
+  /* Dropdown */
+
+  .dropdown {
+    position: relative;
+    display: inline-block;
+    padding: 25px 10px;
+  }
+  
+  .dropdown-content {
+    display: none;
+    position: absolute;
+    transform: translateX(-50%);
+    align-items: center;
+    text-align: center;
+    background-color: #ffffff;
+    border: 2px solid #E88120;
+    border-radius: 20px;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    padding: 12px 16px;
+    z-index: 1;
+  }
+  .dropdown-content h4 {
+    margin: 0;
+  }
+
+  .dropdown-content select option {
+    background-color: #ffffff; /* Cor de fundo para as opções */
+    color: #484848; /* Cor do texto para as opções */
+    border-radius: 20px;
+  }
+  .dropdown-content select option:checked {
+    background-color: #E88120; /* Cor de fundo para as opções */
+    color: #ffffff; /* Cor do texto para as opções */
+  }
+  
+  .dropdown:hover .dropdown-content {
+    display: block;
   }

@@ -21,7 +21,8 @@ app.secret_key = 'chave_secreta'  # Defina uma chave secreta para usar as sessõ
 @app.context_processor
 def tema_global():
     busca_atual = session.get('busca', 'texto')
-    return dict(busca=busca_atual)
+    busca_estoque_atual = session.get('pesquisar', '==')
+    return dict(busca=busca_atual, busca_estoque=busca_estoque_atual)
 
 # Rota para alternar o tema
 @app.route('/alternar_busca', methods=['POST'])
@@ -33,6 +34,7 @@ def alternar_busca():
 
 @app.route('/')
 def index():
+    session['pesquisar'] = 'texto'
     return render_template('index.html')
 
 @app.route('/menu', methods=['POST'])
@@ -249,12 +251,19 @@ def filtrar_estoque():
     produtos = select_estoque('Produtos','ORDER BY '+filtro_tabela)
     return render_template('estoque.html',produtos=produtos)
 
+@app.route('/alternar_busca_estoque', methods=['POST'])
+def alternar_busca_estoque():
+    filtro_pesquisa = request.form['filtro_pesquisa']
+    session['pesquisar'] = filtro_pesquisa
+    return estoque()
+
 @app.route('/pesquisar_quantidade_estoque', methods=['POST'])
 def pesquisar_quantidade_estoque():
     filtro_quantidade = request.form['filtro_quantidade']
-    comando = 'WHERE quantidade <= %s ORDER BY quantidade' % filtro_quantidade
-    produtos = select_estoque('Produtos',comando)
-
+    filtro_sinal = session['pesquisar']
+    if filtro_quantidade=='':
+        return estoque()
+    produtos = pesquisar_estoque(filtro_quantidade,filtro_sinal)
     return render_template('estoque.html',produtos=produtos, filtro_quantidade=filtro_quantidade)
 
 @app.route('/exportar_planilha_estoque', methods=['POST'])
