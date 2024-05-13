@@ -1,8 +1,7 @@
-pip
-
-pip install flask
-pip install qrcode
-pip install datetime
-pip install plotly
-pip install openpyxl
-pip install python-barcode
+flask
+qrcode
+datetime
+plotly
+openpyxl
+python-barcode
+waitress

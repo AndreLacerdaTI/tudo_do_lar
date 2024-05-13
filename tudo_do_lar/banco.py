@@ -83,6 +83,28 @@ def tabela_dicionario(nome_tabela):
     # Renderizar o template com os dados
     return dicionario
 
+def tabela_os_dicionario_consulta(filtro):
+    # Conectar ao banco de dados
+    conn = sqlite3.connect('database.db')
+    cursor = conn.cursor()
+    # Executar a consulta para finalizados ou não finalizados
+    if type(filtro)!=list:
+        consulta = "SELECT * FROM OS WHERE finalizado = ?"
+        cursor.execute(consulta, (filtro,))
+    else:
+        consulta = "SELECT * FROM OS WHERE data_chegada BETWEEN ? AND ? ORDER BY data_chegada"
+        cursor.execute(consulta, (filtro[0], filtro[1]))
+    # Obter os resultados como uma lista de dicionários
+    colunas = [col[0] for col in cursor.description]
+    #dados = cursor.fetchall()
+    #print(dados)
+    dicionario = [dict(zip(colunas, linha)) for linha in cursor.fetchall()]
+    # Fechar a conexão com o banco de dados
+    conn.close()
+
+    # Renderizar o template com os dados
+    return dicionario
+
 def tabela_dicionario_order(nome_tabela,comando):
     # Conectar ao banco de dados
     conn = sqlite3.connect('database.db')

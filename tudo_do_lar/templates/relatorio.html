@@ -34,24 +34,5 @@
             </script>
         </div>
     </div>
-    <div class="container-direita">
-        <div class="cadastro">
-            {% if comprar_produtos %}
-            <table>
-                <tr>
-                    <th class="titulo-tabela">Nome</th>
-                    <th class="titulo-tabela">Quantidade em estoque</th>
-                </tr>
-                {% for produto in comprar_produtos %}
-                <tr>
-                    <td>{{ produto[2] }}</td>
-                    <td>{{ produto[3] }}</td>
-                </tr>
-                {% endfor %}
-                <tr>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tr>
-            </table>
-            {% endif %}
-        </div>
-    </div>
 </div>
 {% endblock %}

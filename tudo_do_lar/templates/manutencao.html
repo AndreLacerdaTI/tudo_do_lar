@@ -6,42 +6,123 @@
 {% endblock %}
 
 {% block menu %}
-    <div class="menu" >
-        <img class="menu-logo" src="/static/images/Logo-color.png" alt="Logo">
-        <form class="form-menu" method="post" action="{{ url_for('menu') }}">
-            <button class="menu-botoes" name="endereco" value="index">Página principal</button>
-            <button class="menu-botoes-ativo" name="endereco" value="manutencao">Manutenção</button>
-            <button class="menu-botoes" name="endereco" value="estoque">Controle de estoque</button>
-            <button class="menu-botoes" name="endereco" value="relatorio">Relatórios</button>
-        </form>
-        {% if os %}
-            <form class="search-box" method="post" action="{{ url_for('buscar_cadastro') }}">
-                {% if busca=='texto' %}
-                    <input type="text" class="input-pesquisa" name="buscar" id="buscar" placeholder="nome / telefone" autocomplete="off"/><span></span>
-                    <button class="menu-botoes-pesquisar">
-                        <img class="icone-pesquisa" src="/static/images/icone-pesquisa.png" alt="Logo">
-                    </button>
-
-                {% elif busca=='data' %}
-                    <input class="input-pesquisa" type="date" name="buscar" id="buscar">
-                    <button class="menu-botoes-pesquisar">
-                        <img class="icone-pesquisa" src="/static/images/icone-pesquisa.png" alt="Logo">
-                    </button>
-                {% endif %}
+    {% if not nota_servico %}
+        <div class="menu" >
+            <img class="menu-logo" src="/static/images/Logo-color.png" alt="Logo">
+            <form class="form-menu" method="post" action="{{ url_for('menu') }}">
+                <button class="menu-botoes" name="endereco" value="index">Página principal</button>
+                <button class="menu-botoes-ativo" name="endereco" value="manutencao">Manutenção</button>
+                <button class="menu-botoes" name="endereco" value="estoque">Controle de estoque</button>
+                <button class="menu-botoes" name="endereco" value="relatorio">Relatórios</button>
             </form>
-            <form method="post" action="{{ url_for('alternar_busca') }}">
-                <button class="menu-botoes">
+            <form class="form-menu" method="post" action="{{ url_for('filtrar_tabela') }}">
+                <div class="dropdown">
+                    <img class="imagem-botao-tabela" src="/static/images/icone-filtro-checked.png" title="Alterar modo de pesquisa">
+                    <div class="dropdown-content">
+                        <h4>Filtros</h4>
+                        <select name="filtro_tabela" id="">
+                            <option value="finalizado">Finalizados</option>
+                            <option value="nao_finalizado">Não finalizados</option>
+                            <option value="semana">Esta semana</option>
+                            <option value="mes">Este mês</option>
+                        </select>
+                        <button class="botao-colorido">Ok</button>
+                    </div>
+                </div>
+            </form>
+            {% if os %}
+                <form class="search-box" method="post" action="{{ url_for('buscar_cadastro') }}">
                     {% if busca=='texto' %}
-                        <img class="imagem-botao-tabela" src="/static/images/icone-calendario.png" alt="Logo" title="Pesquisar por data">
+                        <input type="text" class="input-pesquisa" name="buscar" id="buscar" placeholder="nome / telefone" autocomplete="off"/><span></span>
+                        <button class="menu-botoes-pesquisar">
+                            <img class="icone-pesquisa" src="/static/images/icone-pesquisa.png" alt="Logo">
+                        </button>
+
                     {% elif busca=='data' %}
-                        <img class="imagem-botao-tabela" src="/static/images/icone-texto.png" alt="Logo" title="Pesquisar por texto">
+                        <input class="input-pesquisa" type="date" name="buscar" id="buscar">
+                        <button class="menu-botoes-pesquisar">
+                            <img class="icone-pesquisa" src="/static/images/icone-pesquisa.png" alt="Logo">
+                        </button>
                     {% endif %}
-                </button>
-            </form>
-        {% endif %}
-    </div>
+                </form>
+                <form method="post" action="{{ url_for('alternar_busca') }}">
+                    <button class="menu-botoes">
+                        {% if busca=='texto' %}
+                            <img class="imagem-botao-tabela" src="/static/images/icone-calendario.png" alt="Logo" title="Pesquisar por data">
+                        {% elif busca=='data' %}
+                            <img class="imagem-botao-tabela" src="/static/images/icone-texto.png" alt="Logo" title="Pesquisar por texto">
+                        {% endif %}
+                    </button>
+                </form>
+            {% endif %}
+        </div>
+    {% endif %}
 {% endblock %}
 {% block container %}
+{% if nota_servico %}
+    <div class="plano-fundo">
+        <form method="post" action="{{ url_for('manutencao') }}">
+            <button class="sub-menu-botoes">Fechar</button>
+        </form>
+        <div class="aviso-nota">
+            <a> Sem valor fiscal </a>
+        </div>
+        <div class="cabecalho-nota">
+            <img class="logo-nota" src="/static/images/Logo-color.png" alt="Logo"><br>
+            <h3>Nota de Serviço</h3>
+            <h3>Cliente</h3>
+            <table class="tabela-nota">
+                <thead>
+                    <tr class="linha-nota">
+                        <th>Nome</th>
+                        <th>Contato</th>
+                        <th>Endereço</th>
+                        <th>Data chegada</th>
+                        <th>Data entrega</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="linha-nota">
+                    {% for os in info_os %}
+                        <td>{{ os[1] }}</td>
+                        <td>{{ os[2] }}</td>
+                        <td>{{ os[3] }}</td>
+                        <td><input type="date" value="{{ os[4] }}"></td>
+                        <td><input type="date" value="{{ os[5] }}"></td>
+                    {% endfor %}
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <h3>Produtos / Serviços</h3>
+        <table class="tabela-nota">
+            <thead>
+                <tr class="linha-nota">
+                    <th>Descrição</th>
+                    <th>Valor</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for info_servico in info_servicos %}
+                <tr class="linha-nota">
+                    <td><input class="input-servico" type="text" id="descricao" name="descricao" 
+                        value="{% if info_servico[1]=='None' %}{{ 'Sem descrição' }}{% else %}{{ info_servico[1] }}{% endif %}"  placeholder="Valor"></td>
+                    <td>
+                        <input type="text" id="{{ info_servico[2] }}" name="valor" class="input-valor" value="{{ info_servico[2] }}" placeholder="R$ 0,00">
+                    </td>
+                </tr>
+            {% endfor %}
+            <tr class="linha-nota"></tr>
+            <tr class="linha-nota">
+                <td>Total do serviço</td>
+                <td>
+                    <input type="text" id="{{ total_servic }}" name="valor" class="input-valor" value="{{ total_servico }}" placeholder="R$ 0,00">
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+{% endif %}
 {% if os %}
 <div class="sub-menu" >
     <form method="post" action="{{ url_for('nova_os') }}">
@@ -58,7 +139,7 @@
     <div class="filtros">
         <h4>Buscando por:</h4>
         <form class="form-filtros" method="post" action="{{ url_for('manutencao') }}">
-            <button class="botao-filtro-ativo" value="{{filtro}}">
+            <button class="botao-filtro-ativo" value="{{filtro}}" title="Remover filtro: {{filtro}}">
                 <h4 class="texto-filtro">{{filtro}}</h4>
                 <img class="imagem-botao-filtro" src="/static/images/icone-fechar.png" alt="Logo">
             </button>
@@ -157,6 +238,12 @@
                 <br>
                 <form class="form-servico" method="post" action="{{ url_for('novo_servico') }}">
                     <button class="botao-colorido" name="os_id" value="{{ info_os[0] }}">Adicionar</button>
+                </form>
+            </div>
+            <div class="edicao">
+                <h2>Exportar</h2>
+                <form class="form-servico" method="post" action="{{ url_for('nota_servico') }}">
+                    <button class="botao-colorido" name="os_id" value="{{ info_os[0] }}">Nota de Serviço</button>
                 </form>
             </div>
         </div>

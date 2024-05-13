@@ -39,7 +39,7 @@ cursor.execute(CriarTabelaItem)
 '''
 # Banco produtos
 '''
-
+'''
 
 CriarTabelaOS = """ CREATE TABLE IF NOT EXISTS OS (
                         id integer PRIMARY KEY AUTOINCREMENT,
@@ -60,14 +60,15 @@ CriarTabelaServico = """ CREATE TABLE IF NOT EXISTS Servicos (
                         FOREIGN KEY (os_id) REFERENCES OS(id)
                         ); """
 
+
 conexao = sqlite3.connect('database.db')
 cursor = conexao.cursor()
 cursor.execute(CriarTabelaOS)
 cursor.execute(CriarTabelaServico)
-'''
+
 
 # Banco Produtos com estoque, codigo de barras e preço
-
+'''
 CriarTabelaProdutos = """ CREATE TABLE IF NOT EXISTS Produtos (
                         id integer PRIMARY KEY AUTOINCREMENT,
                         codigo TEXT,
@@ -81,3 +82,4 @@ CriarTabelaProdutos = """ CREATE TABLE IF NOT EXISTS Produtos (
 conexao = sqlite3.connect('estoque.db')
 cursor = conexao.cursor()
 cursor.execute(CriarTabelaProdutos)
+'''

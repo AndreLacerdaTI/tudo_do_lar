@@ -10,7 +10,11 @@ from barcode import EAN13
 from barcode.writer import ImageWriter
 
 
-from datetime import datetime
+from datetime import datetime, timedelta
+
+# Pegar endereço IP da maquina para iniciar o servidor
+import psutil
+import socket
 
 from flask import Flask, render_template, request, session, redirect, url_for
 
@@ -65,12 +69,40 @@ def manutencao():
     return render_template('manutencao.html',os=os,valores=valores)
     #return render_template('manutencao.html',os=os)
 
-@app.route('/filtrar_tabela', methods=['POST'])
-def filtrar_tabela():
-    filtro_tabela = request.form['filtro_tabela']
+@app.route('/filtrar_dados', methods=['POST'])
+def filtrar_dados():
+    filtro_tabela = request.form['filtro_pesquisa']
+    session['pesquisar'] = filtro_tabela
     os = tabela_dicionario_order('OS',filtro_tabela)
     valores = valores_dicionario(os)
     return render_template('manutencao.html',os=os,valores=valores)
+
+@app.route('/filtrar_tabela', methods=['POST'])
+def filtrar_tabela():
+    filtro_tabela = request.form['filtro_tabela']
+    if filtro_tabela=="nao_finalizado":
+        filtro='Não'
+        retorno_filtro='Não finalizado(s)'
+    if filtro_tabela=="finalizado":
+        filtro='Sim'
+        retorno_filtro='Finalizado(s)'
+    if filtro_tabela=="semana":
+        hoje = datetime.now().date()
+        data_inicio = hoje - timedelta(days=hoje.weekday())  # Obtém o primeiro dia da semana
+        data_fim = data_inicio + timedelta(days=6)  # Obtém o último dia da semana
+        filtro=[data_inicio,data_fim]
+        retorno_filtro='Recebidos nesta semana'
+    elif filtro_tabela == 'mes':
+        hoje = datetime.now().date()
+        data_inicio = hoje.replace(day=1)  # Obtém o primeiro dia do mês
+        proximo_mes = hoje.replace(day=28) + timedelta(days=4)  # Adiciona alguns dias para garantir que estamos no próximo mês
+        data_fim = proximo_mes - timedelta(days=proximo_mes.day)  # Obtém o último dia do mês
+        filtro=[data_inicio,data_fim]
+        retorno_filtro='Recebidos neste mês'
+    
+    os = tabela_os_dicionario_consulta(filtro)
+    valores = valores_dicionario(os)
+    return render_template('manutencao.html',os=os,valores=valores, filtro=retorno_filtro)
     #return render_template('manutencao.html',os=os)
 
 @app.route('/buscar_cadastro', methods=['POST'])
@@ -98,6 +130,16 @@ def novo_servico():
     print(os_id)
     return editar_os()
 
+@app.route('/nota_servico', methods=['POST'])
+def nota_servico():
+    os_id = request.form['os_id']
+    info_os = select_param('OS', 'id', os_id)
+    info_servicos = select_param('Servicos', 'os_id', os_id)
+    valor_total = 0
+    for servico in info_servicos:
+        #print(servico[2])
+        valor_total = valor_total + servico[2]
+    return render_template('manutencao.html',nota_servico=True, info_os=info_os, info_servicos=info_servicos, total_servico=valor_total)
 
 @app.route('/registrar_os', methods=['POST'])
 def registrar_os():
@@ -313,6 +355,35 @@ def criar_codigo_de_barras(numero, nome_arquivo):
     print(numero)
     return numero
 
+def obter_endereco_ip_interface(interface='Ethernet'):
+    try:
+        # Obtém todas as interfaces de rede disponíveis
+        interfaces = psutil.net_if_addrs()
+        
+        # Verifica se a interface especificada está presente
+        if interface in interfaces:
+            # Itera sobre os endereços IP associados à interface especificada
+            for endereco in interfaces[interface]:
+                # Verifica se o endereço é IPv4 e não é um endereço de loopback
+                if endereco.family == socket.AF_INET and not endereco.address.startswith('127.'):
+                    return endereco.address
+        else:
+            print(f"A interface {interface} não foi encontrada.")
+            return None
+    except Exception as e:
+        print("Erro ao obter endereço IP da interface:", e)
+        return None
+
 if __name__ == '__main__':
-    app.run(debug=True)
-    #app.run(host='192.168.20.125')
+    #app.run(debug=True)
+    ##app.run(host='192.168.20.125')
+    endereco_ip_ethernet = obter_endereco_ip_interface('Ethernet')
+    if endereco_ip_ethernet:
+        print(f'Servidor iniciado, acesse pelo seu navegador o endereço: {endereco_ip_ethernet}:5000')
+        from waitress import serve
+        serve(app, host=endereco_ip_ethernet, port=5000)
+    else:
+        print('Erro ao iniciar o Servidor!\nSistema iniciado em modo debug\nContate o suporte do sistema\n')
+        app.run(debug=True)
+    #app.run(host='192.168.20.225')
+    #app.run(debug=True, host='192.168.20.125')

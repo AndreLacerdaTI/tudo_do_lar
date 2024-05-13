@@ -6,6 +6,11 @@ body{
     /*text-transform: uppercase;*/
 }
 
+.imagem-fundo{
+    width: 10%;
+    height: 10%;
+}
+
 /* MENU */
 
 .menu{
@@ -189,7 +194,7 @@ body{
 }
 
 .botao-filtro-ativo:hover{
-    background-color: #ff0000;
+    background-color: #1C3354;
 }
 
 
@@ -253,6 +258,68 @@ body{
 
 h2,h1 {
     width: 25%;
+}
+
+/* Home */
+
+.text-logo{
+    font-family: 'static/fonts/Analogue85Black.ttf', sans-serif;
+    font-weight: BOLD;
+    color: #1C3354;
+    width: 100%;
+    text-align: center;
+    margin-top: 50px;
+    margin-bottom: 0px;
+    padding: 0;
+}
+.sub-text-logo{
+    font-family: 'static/fonts/Analogue85Black.ttf', sans-serif;
+    color: #E88120;
+    width: 100%;
+    text-align: center;
+    margin-top: 0px;
+    margin-bottom: 50px;
+}
+
+.home-botoes{
+    background-color: #E88120;
+    color: #fff;
+    border: 0;
+    border-radius: 5px;
+
+    height: 100px;
+    width: 100px;
+    font-size: 12px;
+    text-decoration: none;
+
+    display: inline-block; /* Torna o link um bloco em linha */
+    padding: 10px; /* Adiciona um preenchimento ao redor do texto e do SVG */
+    transition: 0.2s;
+}
+.home-botoes span {
+    vertical-align: middle; /* Alinha verticalmente com o SVG */
+}
+
+.home-botoes svg {
+    width: 60px; /* Define a largura do SVG */
+    height: 60px; /* Define a altura do SVG */
+    vertical-align: middle; /* Alinha verticalmente com o texto */
+}
+.home-botoes:nth-child(even) {
+    background-color: #1C3354;
+}
+
+.home-botoes:hover{
+    scale: 1.05;
+    box-shadow: 0 0 10px gray;
+}
+.container-home{
+    width: 100%;
+    align-items: center;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }
 
 /* Cadastro */
@@ -624,6 +691,63 @@ a .botao-planilha .imagem-botao-planilha{
 .input-menor{
     margin: 10px 5px 10px 30px;
     width: 200px;
+}
+
+/* Nota de Serviço */
+
+.logo-nota{
+    width: 80px;
+    height: 80px;
+    position: absolute;
+    left: 10px;
+}
+
+.aviso-nota{
+    font-size: 80px;
+    transform: rotate(-45deg);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    text-align: center;
+    color: #00000013; /* Cor do texto, ajuste conforme necessário */
+}
+
+.aviso-nota a{
+    padding: 10px 20px;
+    border: 10px dashed #00000013;
+    border-radius: 20px;
+    transform: rotate(-45deg);
+}
+
+.cabecalho-nota{
+    align-items: center;
+    text-align: center;
+}
+
+.tabela-nota{
+    width: 98%;
+}
+
+.linha-titulo {
+    background-color: #484848;
+    color: #ffffff;
+}
+
+.tabela-nota .linha-nota td, .tabela-nota .linha-nota th{
+    border: 1px solid #00000087;
+    background-color: #ffffff;
+
+}
+
+.tabela-nota .linha-nota td input[type="date"]::-webkit-calendar-picker-indicator {
+    display: none;
+}
+.tabela-nota .linha-nota td input{
+    border: 0;
+    font-size: 15px;
+    font-family: 'Roboto Slab', serif;
 }
 
 /* Checkbox flip */

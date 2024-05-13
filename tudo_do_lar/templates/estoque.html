@@ -14,16 +14,6 @@
             <button class="menu-botoes-ativo" name="endereco" value="estoque">Controle de estoque</button>
             <button class="menu-botoes" name="endereco" value="relatorio">Relatórios</button>
         </form>
-        <form class="search-box" method="post" action="{{ url_for('pesquisar_quantidade_estoque') }}">
-            {% if session['pesquisar']=='texto' %}
-                <input class="input-pesquisa" type="text" id="filtro_quantidade" name="filtro_quantidade" placeholder="id / nome" autocomplete="off">
-            {% else %}
-                <input class="input-pesquisa" type="text" id="filtro_quantidade" name="filtro_quantidade" placeholder="Quantidade {{session['pesquisar']}}" autocomplete="off">
-            {% endif %}
-            <button class="menu-botoes-pesquisar">
-                <img class="icone-pesquisa" src="/static/images/icone-pesquisa.png" alt="Logo">
-            </button>
-        </form>
         <form class="form-menu" method="post" action="{{ url_for('alternar_busca_estoque') }}">
             <div class="dropdown">
                 <img class="imagem-botao-tabela" src="/static/images/icone-filtro-checked.png" title="Alterar modo de pesquisa">
@@ -39,6 +29,16 @@
                     <button class="botao-colorido">Ok</button>
                 </div>
             </div>
+        </form>
+        <form class="search-box" method="post" action="{{ url_for('pesquisar_quantidade_estoque') }}">
+            {% if session['pesquisar']=='texto' %}
+                <input class="input-pesquisa" type="text" id="filtro_quantidade" name="filtro_quantidade" placeholder="id / nome" autocomplete="off">
+            {% else %}
+                <input class="input-pesquisa" type="text" id="filtro_quantidade" name="filtro_quantidade" placeholder="Quantidade {{session['pesquisar']}}" autocomplete="off">
+            {% endif %}
+            <button class="menu-botoes-pesquisar">
+                <img class="icone-pesquisa" src="/static/images/icone-pesquisa.png" alt="Logo">
+            </button>
         </form>
         <form><h1>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h1></form>
         <form class="form-planilha" method="post" action="{{ url_for('exportar_planilha_estoque') }}">
@@ -212,12 +212,14 @@
                 </tr>
             {% endfor %}
         </table>
-    {% else %}
+    {% endif %}
+    {% if not produtos and not editar_produto and not adicionar_produto %}
         <div class="filtros">
             <h4>Nenhum produto encontrado</h4>
-            <img class="imagem-botao-tabela" src="/static/images/icone-nao-encontrado.png" alt="Logo">
-            <h4>:|</h4>
+            <img class="imagem-fundo" src="/static/images/icone-nao-encontrado.png" alt="Logo">
         </div>
+    {% else %}
+        <div class="filtros"></div>
     {% endif %}
     <script>
         document.addEventListener('DOMContentLoaded', function () {

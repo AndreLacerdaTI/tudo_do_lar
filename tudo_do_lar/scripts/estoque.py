@@ -1,6 +1,5 @@
 import sqlite3
 from openpyxl import Workbook
-import pandas as pd
 
 # COMANDOS PARA CONTROLE DO BANCO DE DADOS
 
